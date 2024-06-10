@@ -1,7 +1,0 @@
-{
-    "test": [
-      { "classement": 1, "score": "1min30", "nom": "Clément" },
-      { "classement": 2, "score": "1min20", "nom": "Nelson" },
-      { "classement": 3, "score": "1min10", "nom": "Wilson" }
-    ]
-  }
