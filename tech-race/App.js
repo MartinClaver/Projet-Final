@@ -1,18 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import ScoreBoard from './src/scoreBoard/ScoreBoard';
 
 export default function App() {
+
   return (
-    <View style={styles.container}>
-      <Text className="items-center justify-center bg-red">Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ScoreBoard />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
