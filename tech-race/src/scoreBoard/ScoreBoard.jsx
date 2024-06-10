@@ -9,7 +9,6 @@ export default function ScoreBoard() {
     { classement: 2, score: '1min20', nom: 'Nelson' },
     { classement: 3, score: '1min10', nom: 'Wilson' },
     { classement: 4, score: 'test', nom: 'dfgd' }
-
   ]);
 
   // useEffect(() => {
@@ -26,7 +25,7 @@ export default function ScoreBoard() {
   //   }
   // };
 
-  const renderColumn = (dataScore, key) => (
+  const scoreColumn = (dataScore, key) => (
     <FlatList
       data={dataScore}
       keyExtractor={(item) => item.classement.toString()}
@@ -60,13 +59,13 @@ export default function ScoreBoard() {
         </View>
         <View className="flex-row pb-2">
           <View className="w-1/3">
-            {renderColumn(scores, 'classement')}
+            {scoreColumn(scores, 'classement')}
           </View>
           <View className="w-1/3">
-            {renderColumn(scores, 'score')}
+            {scoreColumn(scores, 'score')}
           </View>
           <View className="w-1/3">
-            {renderColumn(scores, 'nom')}
+            {scoreColumn(scores, 'nom')}
           </View>
         </View>
       </View>
