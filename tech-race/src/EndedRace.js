@@ -1,14 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function EndedRace() {
+const EndedRace = () => {
   return (
     <View style={styles.container}>
+      <Image source="../img/HOmeLogo.svg"/>
       <Text>RACE SUMMARY</Text>
       <Image source="../img/carImage.png"
       />
-      <View></View>
-      <View></View>
+      <View>
+      <Text>Timer</Text>
+      </View>
+      <View>
+        <Text>Average Speed</Text>
+        <Text>Max Speed</Text>
+      </View>
       </View>
   );
 }
@@ -21,3 +27,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default EndedRace;
