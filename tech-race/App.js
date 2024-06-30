@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ManualDrivingScreen from './screens/manualDrivingScreen.js';
 import HomePage from './screens/homePage.js';
 import BotDrivingView from './screens/botDrivingView.js';
-import EndedRace from './src/EndedRace';
+import EndedRace from './screens/EndedRace';
 
 const Stack = createNativeStackNavigator();
 
