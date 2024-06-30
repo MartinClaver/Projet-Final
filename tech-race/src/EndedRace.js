@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 
 const EndedRace = () => {
   return (
     <View style={styles.container}>
-      <Image source="../img/HOmeLogo.svg"/>
+      <Image source="../img/HomeLogo.svg"/>
       <Text>RACE SUMMARY</Text>
       <Image source="../img/carImage.png"
       />
