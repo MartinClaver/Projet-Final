@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ManualDrivingScreen from './screens/manualDrivingScreen.js';
@@ -8,8 +7,7 @@ import EndedRace from './src/EndedRace';
 
 const Stack = createNativeStackNavigator();
 
-
-const HomeScreen = () => {
+export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -18,11 +16,12 @@ const HomeScreen = () => {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="HomePage" component={HomePage} />
+      <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="Manual" component={ManualDrivingScreen} />
         <Stack.Screen name="BotView" component={BotDrivingView} />
         <Stack.Screen name="EndedRace" component={EndedRace}/>
-    </Stack.Navigator>
-  </NavigationContainer>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+
