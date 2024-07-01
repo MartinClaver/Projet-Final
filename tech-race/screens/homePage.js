@@ -5,8 +5,11 @@ import Scores from '../assets/Scores.svg';
 import Automatic from '../assets/Automatic.svg';
 import Manual from '../assets/Manual.svg';
 import ButtonDefault from '../components/ButtonDefault';
+import { useNavigation } from '@react-navigation/native';
 
 const HomePage = () => {
+  const navigation = useNavigation();
+  
   return (
     <View style={styles.container}>
     	<View style={styles.header}>
@@ -26,7 +29,7 @@ const HomePage = () => {
 			<ButtonDefault title="Automatic" onPress={() => {}} svg={Automatic} />
 			<ButtonDefault title="Manual" onPress={() => {}} inverted='true' svg={Manual} />
       	</View>
-      	<TouchableOpacity style={styles.circleButton}>
+      	<TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate('Manual')}>
         	<Text style={styles.buttonText}>Start Engine</Text>
       	</TouchableOpacity>
     </View>
