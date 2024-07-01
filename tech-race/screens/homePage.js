@@ -27,7 +27,7 @@ const HomePage = () => {
 			<ButtonDefault title="Manual" onPress={() => {}} inverted='true' svg={Manual} />
       	</View>
       	<TouchableOpacity style={styles.circleButton}>
-        	<Text style={styles.buttonText}>Grand Bouton</Text>
+        	<Text style={styles.buttonText}>Start Engine</Text>
       	</TouchableOpacity>
     </View>
   );
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 	flex: 1,
 	justifyContent: 'center',
     alignItems: 'center',
-	marginVertical: 20
+	marginVertical: 50
   },
   svgScores: {
 	flexDirection: 'row',
