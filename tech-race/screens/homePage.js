@@ -9,7 +9,7 @@ import ButtonDefault from '../components/ButtonDefault';
 const HomePage = () => {
   return (
     <View style={styles.container}>
-    	<View style={styles.row}>
+    	<View style={styles.header}>
         	<View style={styles.svgLogo}>
         		<LogoApp style={styles.logo} />
         	</View>
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1E1E1E',
   },
-  row: {
+  header: {
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
