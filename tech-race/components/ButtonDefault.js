@@ -5,12 +5,7 @@ const ButtonDefault = ({ onPress, title, inverted, svg: SvgIcon }) => {
   return (
     <Pressable
       onPress={onPress}
-      style={[
-        {
-          backgroundColor: inverted ? '#FFFFFF' : '#00634D',
-        },
-        styles.button,
-      ]}
+      style={[ styles.button, inverted ? styles.inverted : styles.default ]}
     >
       {SvgIcon && (
         <View style={styles.svgContainer}>
@@ -18,12 +13,7 @@ const ButtonDefault = ({ onPress, title, inverted, svg: SvgIcon }) => {
         </View>
       )}
       <Text
-        style={[
-          {
-            color: inverted ? '#00634D' : '#FFFFFF',
-          },
-          styles.text,
-        ]}
+        style={[ styles.text, inverted ? styles.textInverted : styles.textDefault ]}
       >
         {title}
       </Text>
@@ -32,20 +22,32 @@ const ButtonDefault = ({ onPress, title, inverted, svg: SvgIcon }) => {
 };
 
 const styles = StyleSheet.create({
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 10,
-	paddingHorizontal: 30,
-    borderRadius: 10,
-    flexDirection: 'column',
-	width: '10em'
-  },
-  text: {
-	marginTop: 10,
-    fontSize: 16,
-	fontWeight: 'bold'
-  },
+	button: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingVertical: 10,
+		paddingHorizontal: 30,
+		borderRadius: 10,
+		flexDirection: 'column',
+		width: '10em',
+	},
+	default: {
+		backgroundColor: '#00634D'
+	},
+	inverted: {
+		backgroundColor: '#FFFFFF'
+	},
+	text: {
+		marginTop: 10,
+		fontSize: 16,
+		fontWeight: 'bold',
+	},
+	textDefault: {
+		color: '#FFFFFF'
+	},
+	textInverted: {
+		color: '#00634D'
+	},
 });
 
 export default ButtonDefault;

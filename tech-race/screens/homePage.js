@@ -11,10 +11,10 @@ const HomePage = () => {
     <View style={styles.container}>
     	<View style={styles.header}>
         	<View style={styles.svgLogo}>
-        		<LogoApp style={styles.logo} />
+        		<LogoApp/>
         	</View>
 			<View style={styles.svgScores}>
-				<Scores style={styles.scores} />
+				<Scores/>
 			</View>
       	</View>
 		<Image
