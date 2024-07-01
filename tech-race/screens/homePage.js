@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 	flex: 1,
 	justifyContent: 'center',
     alignItems: 'center',
-	marginVertical: 50
+	marginTop: '3em'
   },
   svgScores: {
 	flexDirection: 'row',
@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   circleButton: {
-    width: 150,
-    height: 150,
-    borderRadius: 100,
+    width: '10em',
+    height: '10em',
+    borderRadius: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-	borderWidth: 2,
+	borderWidth: '0.3em',
 	borderColor: '#00C99C',
-	marginTop: 20
+	marginTop: '1.5em'
   },
   buttonText: {
     color: 'white',
