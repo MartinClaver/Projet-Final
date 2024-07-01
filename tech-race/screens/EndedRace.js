@@ -22,20 +22,25 @@ const EndedRace = () => {
         <View style={styles.homeLogo}>
           <HomeLogo  />
         </View>
-        <Text style={styles.text}>RACE SUMMARY</Text> 
+        <View style={styles.titleView}>
+          <Text style={styles.title}>RACE SUMMARY</Text> 
+        </View>
       </View>
       <View style={styles.body}>
         <Image source={require('../assets/carImage.png')} style={styles.carImage}/>
         <View style={styles.stats}>
-          <View style={styles.statsContainer}>
-            <Text>Timer</Text>
+          <View style={styles.timer}>
+            <Text style={styles.statTitle}>Timer</Text>
+            <Text style={styles.data}>Data</Text>
           </View>
           <View style={styles.speed}>
             <View style={styles.statsContainer}>
-              <Text>Average Speed</Text>
+              <Text style={styles.statTitle}>Average Speed</Text>
+              <Text style={styles.data}>Data</Text>
             </View>
             <View style={styles.statsContainer}>
-              <Text>Max Speed</Text>
+              <Text style={styles.statTitle}>Max Speed</Text>
+              <Text style={styles.data}>Data</Text>
             </View>
           </View>
         </View>
@@ -49,34 +54,72 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     backgroundColor: '#1E1E1E',
-    alignItems: 'center',
     justifyContent: 'center',
   },
   header: {
-    padding: 50,
+    paddingTop: 60,
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-around',
   },
   homeLogo: {
-    width: '100%',
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    padding: 10,
+    flexDirection: 'row',
     justifyContent: 'flex-start',
+  },
+  titleView: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#24E8A0',
   },
   body: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
   },
   stats: {
     flexDirection: 'column',
   },
+  timer: {
+    backgroundColor: '#24E8A0',
+    borderRadius: 20,
+    padding: 5,
+    alignItems: 'center',
+    width: 225,
+    height: 100,
+  },
   statsContainer: {
     backgroundColor: '#24E8A0',
+    borderRadius: 20,
+    width: 100,
+    height: 100,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   speed: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 5,
+  },
+  statTitle: {
+    fontSize: 12,
+  },
+  data: {
+    fontSize: 32,
+    fontWeight: 'bold',
   },
   carImage: {
-    width: 140,
-    height: 140,
+    width: 280,
+    height: 280,
   },
 });
 
