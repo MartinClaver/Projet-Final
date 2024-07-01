@@ -49,8 +49,6 @@ const BotDrivingView = () => {
           </View>
         </View>
       
-        <Text style={styles.timer}>00:00:00</Text>
-
       </View>
 
     </View>
