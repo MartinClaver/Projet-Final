@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import LeftArrow from '../assets/LeftArrow.svg';
 import RightArrow from '../assets/RightArrow.svg';
@@ -12,32 +10,6 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import Timer from '../components/Timer';
 
 const ManualDrivingScreen = ({ navigation }) => {
-  const [isRunning, setIsRunning] = useState(false);
-  const [resetTimer, setResetTimer] = useState(false);
-
-  useEffect(() => {
-    const lockOrientation = async () => {
-      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-    };
-
-    lockOrientation();
-
-    return () => {
-      ScreenOrientation.unlockAsync();
-    };
-  }, []);
-
-  const handleStopPress = () => {
-    setIsRunning(false);
-    setResetTimer(true);
-    navigation.goBack();
-  };
-
-  const handleRightPedalPress = () => {
-    setIsRunning(true);
-    setResetTimer(false);
-  };
-
   const [isRunning, setIsRunning] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
 
@@ -159,19 +131,13 @@ fill:"white"
 rightPedalSVG: {
   width:130,
   height:130,
-  fill:"white"
+  fill:"white",
   marginRight: 25,
-  bottom: -50
 },
 leftPedalSVG: {
 width:100,
 height:100,
 fill:"white"
-},
-rightPedalSVG: {
-  width:130,
-  height:130,
-  fill:"white"
 }
 });
 
