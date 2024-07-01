@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useEffect } from 'react';
-import Svg, { Defs, LinearGradient, Stop, start, Circle } from 'react-native-svg';
-import HomeLogo from "../assets/Group1.svg";
+import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
 
 const EndedRace = () => {
@@ -19,26 +18,27 @@ const EndedRace = () => {
   }, []);
   return (
     <View style={styles.container}>
-      {/* <HomeLogo width={80} height={80} fill='white'/> */}
-      <Svg height="120" width="120" style={styles.svg}>
-        <Defs>
-          <LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor={start ? "#FF6F61": "#00C99C"} stopOpacity="1" />
-            <Stop offset="100%" stopColor={start ? "#B22222": "#00634D" } stopOpacity="1" />
-          </LinearGradient>
-        </Defs>
-        <Circle cx="60" cy="60" r="55" stroke="url(#grad)" strokeWidth="5" fill="none" />
-      </Svg>
-      <Text>RACE SUMMARY</Text>
-      <Image source={require('../assets/carImage.png')} style={styles.carImage}/>
-      <View style={styles.statsContainer}>
-      <Text>Timer</Text>
+      <View style={styles.header}>
+        <View style={styles.homeLogo}>
+          <HomeLogo  />
+        </View>
+        <Text style={styles.text}>RACE SUMMARY</Text> 
       </View>
-      <View style={styles.statsContainer}>
-        <Text>Average Speed</Text>
-      </View>
-      <View style={styles.statsContainer}>
-        <Text>Max Speed</Text>
+      <View style={styles.body}>
+        <Image source={require('../assets/carImage.png')} style={styles.carImage}/>
+        <View style={styles.stats}>
+          <View style={styles.statsContainer}>
+            <Text>Timer</Text>
+          </View>
+          <View style={styles.speed}>
+            <View style={styles.statsContainer}>
+              <Text>Average Speed</Text>
+            </View>
+            <View style={styles.statsContainer}>
+              <Text>Max Speed</Text>
+            </View>
+          </View>
+        </View>
       </View>
       <StatusBar style="auto" />
     </View>
@@ -47,24 +47,36 @@ const EndedRace = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: 'column',
     backgroundColor: '#1E1E1E',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  statsContainer: {
-    flex: 1,
-    backgroundColor: '#24E8A0',
-    alignItems: 'center',
-    justifyContent: 'center',
+  header: {
+    padding: 50,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
   },
   homeLogo: {
-    width: '80px',
-    height: '80px',
+    width: '100%',
+    justifyContent: 'flex-start',
+  },
+  body: {
+    flexDirection: 'row',
+  },
+  stats: {
+    flexDirection: 'column',
+  },
+  statsContainer: {
+    backgroundColor: '#24E8A0',
+  },
+  speed: {
+    flexDirection: 'row',
   },
   carImage: {
-    width: '120px',
-    height: '120px',
+    width: 140,
+    height: 140,
   },
 });
 
