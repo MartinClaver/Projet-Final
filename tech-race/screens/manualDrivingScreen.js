@@ -5,6 +5,7 @@ import LeftArrow from '../assets/LeftArrow.svg';
 import RightArrow from '../assets/RightArrow.svg';
 import LeftPedal from '../assets/LeftPedal.svg';
 import RightPedal from '../assets/RightPedal.svg';
+import StopSVG from '../assets/StopSVG.svg';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import Timer from '../components/Timer';
 
@@ -38,7 +39,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.stopButton} onPress={handleStopPress}>
-        <Image source={require('../assets/StopButton.png')} style={styles.stopButtonImage} />
+        <StopSVG/>
       </TouchableOpacity>
       <Timer isRunning={isRunning} resetTimer={resetTimer} />
       <View style={styles.controls}>
