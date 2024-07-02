@@ -8,8 +8,8 @@ const ButtonDefault = ({ onPress, title, inverted, svg: SvgIcon }) => {
       style={[ styles.button, inverted ? styles.inverted : styles.default ]}
     >
       {SvgIcon && (
-        <View style={styles.svgContainer}>
-          <SvgIcon />
+        <View>
+          <SvgIcon stroke={inverted ? '#00634D' : '#FFFFFF' }/>
         </View>
       )}
       <Text

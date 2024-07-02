@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, Text, Dimensions, StyleSheet, Pressable } from 'react-native';
 import LogoApp from '../assets/LogoApp.svg';
 import Scores from '../assets/Scores.svg';
@@ -10,7 +10,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomePage = () => {
   const navigation = useNavigation();
-  
+  const [isManual, setIsManual] = useState(true)
+
   return (
     
     <SafeAreaView style={styles.container}>
@@ -28,10 +29,10 @@ const HomePage = () => {
 			resizeMode="contain"
 		/>
 		<View style={styles.buttonRow}>
-			<ButtonDefault title="Automatic" onPress={() => {}} svg={Automatic} />
-			<ButtonDefault title="Manual" onPress={() => {}} inverted='true' svg={Manual} />
+			<ButtonDefault title="Automatic" onPress={() => setIsManual(false)} inverted={isManual} svg={Automatic} />
+			<ButtonDefault title="Manual" onPress={() => setIsManual(true)} inverted={!isManual} svg={Manual} />
       	</View>
-      	<TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate('Manual')}>
+      	<TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate(isManual ? 'Manual' : 'BotView')}>
         	<Text style={styles.buttonText}>Start Engine</Text>
       	</TouchableOpacity>
     </SafeAreaView>
