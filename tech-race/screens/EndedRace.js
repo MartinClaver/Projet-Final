@@ -28,17 +28,17 @@ const EndedRace = () => {
       </View>
       <View style={styles.body}>
         <Image source={require('../assets/carImage.png')} style={styles.carImage}/>
-        <View style={styles.stats}>
-          <View style={styles.timer}>
+        <View>
+          <View style={StyleSheet.flatten([styles.stats, styles.timer])}>
             <Text style={styles.statTitle}>Timer</Text>
             <Text style={styles.data}>Data</Text>
           </View>
           <View style={styles.speed}>
-            <View style={styles.statsContainer}>
+            <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
               <Text style={styles.statTitle}>Average Speed</Text>
               <Text style={styles.data}>Data</Text>
             </View>
-            <View style={styles.statsContainer}>
+            <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
               <Text style={styles.statTitle}>Max Speed</Text>
               <Text style={styles.data}>Data</Text>
             </View>
@@ -86,24 +86,18 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   stats: {
-    flexDirection: 'column',
-  },
-  timer: {
     backgroundColor: '#24E8A0',
-    borderRadius: 20,
-    padding: 5,
+    justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 20,
+  },
+  timer:{
     width: 225,
     height: 100,
   },
   statsContainer: {
-    backgroundColor: '#24E8A0',
-    borderRadius: 20,
-    width: 100,
     height: 100,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 100,
   },
   speed: {
     flexDirection: 'row',
