@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
 
-const EndedRace = () => {
+const EndedRace = ({ navigation }) => {
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
@@ -20,7 +20,7 @@ const EndedRace = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.homeLogo}>
-          <HomeLogo  />
+          <HomeLogo onPress={() => navigation.navigate('HomePage')} />
         </View>
         <View style={styles.titleView}>
           <Text style={styles.title}>RACE SUMMARY</Text> 
