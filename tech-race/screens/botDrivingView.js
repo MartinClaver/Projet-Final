@@ -4,8 +4,9 @@ import { Circle, Defs, LinearGradient, Path, Stop, Svg } from 'react-native-svg'
 import CarsAlert from '../assets/CarsAlert.svg';
 import Engine from '../assets/Engine.svg';
 import Sos from '../assets/Sos.svg';
+import Timer from '../components/Timer';
 
-const BotDrivingView = () => {
+const BotDrivingView = ({ navigation }) => {
   const image = {uri: 'https://legacy.reactjs.org/logo-og.png'};
 
   const [start, setStart] = useState(false);
@@ -13,17 +14,28 @@ const BotDrivingView = () => {
   const [isOutOfBattery, setIsOutOfBattery] = useState(false);
   const [isLost, setIsLost] = useState(false);
 
+  const [isRunning, setIsRunning] = useState(false);
+  const [resetTimer, setResetTimer] = useState(false);
+
+
   const handlePress = () => {
     setStart(!start);
+    setIsRunning(!isRunning);
   };
   
+  const handleStopReturn = () => {
+    setIsRunning(false);
+    setResetTimer(true);
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.bigContainer}>
       <View style={styles.videoContainer}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image} />
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.timer}>00:00:00</Text>
+        <Timer isRunning={isRunning} resetTimer={resetTimer} />
 
         <View style={styles.sectionButton}>
 
@@ -37,7 +49,7 @@ const BotDrivingView = () => {
               </Defs>
               <Circle cx="60" cy="60" r="55" stroke="url(#grad)" strokeWidth="5" fill="none" />
             </Svg>
-            <TouchableOpacity style={styles.buttonStart} onPress={handlePress}>
+            <TouchableOpacity style={styles.buttonStart} onPress={start ? handleStopReturn : handlePress}>
               <Text style={styles.buttonText}>{start ? "Stop" : "Start"}</Text>
             </TouchableOpacity>
           </View>
