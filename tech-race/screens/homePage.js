@@ -5,10 +5,15 @@ import Scores from '../assets/Scores.svg';
 import Automatic from '../assets/Automatic.svg';
 import Manual from '../assets/Manual.svg';
 import ButtonDefault from '../components/ButtonDefault';
+import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomePage = () => {
+  const navigation = useNavigation();
+  
   return (
-    <View style={styles.container}>
+    
+    <SafeAreaView style={styles.container}>
     	<View style={styles.header}>
         	<View style={styles.svgLogo}>
         		<LogoApp/>
@@ -26,10 +31,10 @@ const HomePage = () => {
 			<ButtonDefault title="Automatic" onPress={() => {}} svg={Automatic} />
 			<ButtonDefault title="Manual" onPress={() => {}} inverted='true' svg={Manual} />
       	</View>
-      	<TouchableOpacity style={styles.circleButton}>
+      	<TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate('Manual')}>
         	<Text style={styles.buttonText}>Start Engine</Text>
       	</TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -41,6 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E1E1E',
   },
   header: {
+    marginTop: 50,
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
@@ -67,14 +73,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   circleButton: {
-    width: '10em',
-    height: '10em',
-    borderRadius: '100%',
+    width: 150,
+    height: 150,
+    borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-	borderWidth: '0.3em',
-	borderColor: '#00C99C',
-	marginTop: '1.5em'
+    borderWidth: 2,
+    borderColor: '#00C99C',
+    marginTop: 20
   },
   buttonText: {
     color: 'white',
