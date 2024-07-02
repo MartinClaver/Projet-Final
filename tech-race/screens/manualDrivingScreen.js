@@ -28,7 +28,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const handleStopPress = () => {
     setIsRunning(false);
     setResetTimer(true);
-    navigation.goBack();
+    navigation.navigate('EndedRace');
   };
 
   const handleRightPedalPress = () => {
