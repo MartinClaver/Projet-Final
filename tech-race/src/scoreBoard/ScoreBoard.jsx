@@ -1,37 +1,53 @@
-import { FlatList, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { FlatList, Text, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
 export default function ScoreBoard() {
-  const title = 'Classement des scores';
+  let title = 'Classement des scores';
 
   const [scores, setScores] = useState([
-    { classement: 1, score: '1min30', nom: 'Clément' },
-    { classement: 2, score: '1min20', nom: 'Nelson' },
-    { classement: 3, score: '1min10', nom: 'Wilson' },
-    { classement: 4, score: 'test', nom: 'dfgd' }
+    { classement: 1, score: '1:30', nom: 'Clément' },
+    { classement: 2, score: '1:20', nom: 'Nelson' },
+    { classement: 3, score: '1:10', nom: 'Wilson' },
+    { classement: 4, score: '1:00', nom: 'Arthur' },
+    { classement: 5, score: '1:60', nom: 'Didier' }
   ]);
 
-  // useEffect(() => {
-  //   fetchScores();
-  // }, []);
+  const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
+  
+  // function for getRandomColor
+  const getRandomColor = (excludeColor) => {
+    let color;
+    do {
+      color = colors[Math.floor(Math.random() * colors.length)];
+    } while (color === excludeColor);
+    return color;
+  };
 
-  // const fetchScores = async () => {
-  //   try {
-  //     const response = await fetch('./database/test.json');
-  //     const data = await response.json();
-  //     setScores(data);
-  //   } catch (error) {
-  //     console.error('Ah batard:', error);
-  //   }
-  // };
+  // useEffect for to set each line with a random color 
+  useEffect(() => {
+    setScores(prevScores => {
+      let lastColor = null;
+      return prevScores.map(score => {
+        const newColor = getRandomColor(lastColor);
+        lastColor = newColor;
+        return {
+          ...score,
+          color: newColor,
+          nom: score.nom.toUpperCase(),
+          score: score.score.toUpperCase(),
+        };
+      });
+    });
+  }, []);
 
+  // function type
   const scoreColumn = (dataScore, key) => (
     <FlatList
       data={dataScore}
       keyExtractor={(item) => item.classement.toString()}
       renderItem={({ item }) => (
-        <View className="border-gray-300 py-1">
-          <Text className="text-center text-sm text-white">
+        <View style={styles.itemContainer}>
+          <Text style={[styles.itemText, { color: item.color }]}>
             {item[key]}
           </Text>
         </View>
@@ -41,30 +57,30 @@ export default function ScoreBoard() {
   );
 
   return (
-    <View className="p-4 mt-14 bg-slate-900 rounded-xl h-[100%]">
-      <View className="flex">
+    <View style={styles.container}>
+      <View style={styles.flexContainer}>
         <View>
-          <Text className="text-center mb-4 text-white text-xl">{title}</Text>
+          <Text style={styles.title}>{title}</Text>
         </View>
-        <View className="flex-row">
-          <View className="w-1/3 border-b border-gray-300">
-            <Text className="text-center font-bold text-lg text-white">Classement</Text>
+        <View style={styles.row}>
+          <View style={styles.columnHeader}>
+            <Text style={styles.headerText}>Classement</Text>
           </View>
-          <View className="w-1/3 border-b border-gray-300">
-            <Text className="text-center font-bold text-lg text-white">Score</Text>
+          <View style={styles.columnHeader}>
+            <Text style={styles.headerText}>Score</Text>
           </View>
-          <View className="w-1/3 border-b border-gray-300">
-            <Text className="text-center font-bold text-lg text-white">Nom</Text>
+          <View style={styles.columnHeader}>
+            <Text style={styles.headerText}>Nom</Text>
           </View>
         </View>
-        <View className="flex-row pb-2">
-          <View className="w-1/3">
+        <View style={styles.row}>
+          <View style={styles.column}>
             {scoreColumn(scores, 'classement')}
           </View>
-          <View className="w-1/3">
+          <View style={styles.column}>
             {scoreColumn(scores, 'score')}
           </View>
-          <View className="w-1/3">
+          <View style={styles.column}>
             {scoreColumn(scores, 'nom')}
           </View>
         </View>
@@ -72,3 +88,49 @@ export default function ScoreBoard() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    paddingTop: 56,
+    backgroundColor: '#1e293b',
+    borderRadius: 15,
+    height: '100%',
+  },
+  flexContainer: {
+    flex: 1,
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: 16,
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 700,
+  },
+  row: {
+    flexDirection: 'row',
+    borderColor: '#d1d5db',
+  },
+  columnHeader: {
+    width: '33%',
+    borderBottomWidth: 1,
+    borderColor: '#d1d5db',
+  },
+  headerText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+  },
+  column: {
+    width: '33%',
+  },
+  itemContainer: {
+    borderBottomWidth: 1,
+    borderColor: '#d1d5db',
+    paddingVertical: 8,
+  },
+  itemText: {
+    textAlign: 'center',
+    fontSize: 14,
+  },
+});
