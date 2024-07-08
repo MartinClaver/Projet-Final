@@ -16,10 +16,10 @@ export default function App() {
           headerShown: false,
         }}
       >
-      <Stack.Screen name="HomePage" component={HomePage} />
+        <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="Manual" component={ManualDrivingScreen} />
         <Stack.Screen name="BotView" component={BotDrivingView} />
-        <Stack.Screen name="EndedRace" component={EndedRace}/>
+        <Stack.Screen name="EndedRace" component={EndedRace} />
       </Stack.Navigator>
     </NavigationContainer>
   );
