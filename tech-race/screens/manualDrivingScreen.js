@@ -57,41 +57,6 @@ const ManualDrivingScreen = ({ navigation }) => {
     ws.send(JSON.stringify(message));
     console.log('Message sent:', message);
   }
-  // const goBackward = () => {
-  //   const message = {
-  //     cmd: 1,
-  //     data: [-1, -1, -1, -1],
-  //   };
-  //   ws.send(JSON.stringify(message));
-  //   console.log('Message sent:', message);
-  // };
-
-  // const goForward = () => {
-  //   const message = {
-  //     cmd: 1,
-  //     data: [1, 1, 1, 1],
-  //   };
-  //   ws.send(JSON.stringify(message));
-  //   console.log('Message sent:', message);
-  // };
-
-  // const turnLeft = () => {
-  //   const message = {
-  //     cmd: 1,
-  //     data: [-1, -1, 1, 1],
-  //   };
-  //   ws.send(JSON.stringify(message));
-  //   console.log('Message sent:', message);
-  // };
-
-  // const turnRigth = () => {
-  //   const message = {
-  //     cmd: 1,
-  //     data: [1, 1, -1, -1],
-  //   };
-  //   ws.send(JSON.stringify(message));
-  //   console.log('Message sent:', message);
-  // };
 
   const stopEverything = () => {
     const message = {
