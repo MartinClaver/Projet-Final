@@ -6,8 +6,10 @@ import RightArrow from '../assets/RightArrow.svg';
 import LeftPedal from '../assets/LeftPedal.svg';
 import RightPedal from '../assets/RightPedal.svg';
 import StopSVG from '../assets/StopSVG.svg';
+import Klaxon from '../assets/Klaxon.svg';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import Timer from '../components/Timer';
+import CustomPressable from '../components/CustomPressable';
 
 const ManualDrivingScreen = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
@@ -110,26 +112,22 @@ const ManualDrivingScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.stopButton} onPressIn={klaxon} onPressOut={klaxonOut}>
+      <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.stopButton} onPressIn={klaxon} onPressOut={klaxonOut}>
+        <Klaxon />
       </TouchableOpacity>
       <Timer isRunning={isRunning} resetTimer={resetTimer} />
       <View style={styles.controls}>
         <View style={styles.arrows}>
-          <TouchableOpacity style={styles.arrowButton} onPressIn={() => goLeftOrRigth("left")} onPressOut={stopEverything}>
-            <LeftArrow style={styles.leftArrowSVG} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.arrowButton} onPressIn={() => goLeftOrRigth()} onPressOut={stopEverything}>
-            <RightArrow style={styles.leftArrowSVG} />
-          </TouchableOpacity>
-        </View>
+        <CustomPressable onBegin={goLeftOrRigth('left')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftArrow style={styles.leftArrowSVG} />} />
+        <CustomPressable onBegin={goLeftOrRigth()} onEnd={stopEverything} onFinalize={stopEverything} children={<RightArrow style={styles.rightArrowSVG} />} />
         <View style={styles.pedals}>
-          <TouchableOpacity style={styles.leftPedal} onPressIn={() => goBackForWard("back")} onPressOut={stopEverything}>
-            <LeftPedal style={styles.leftPedalSVG} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.pedalButton} onPressIn={handleRightPedalPress} onPressOut={stopEverything}>
-            <RightPedal style={styles.rightPedalSVG} />
-          </TouchableOpacity>
+
+        <CustomPressable onBegin={goBackForWard('back')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftPedal style={styles.leftPedalSVG} />} />
+        <CustomPressable onBegin={handleRightPedalPress} onEnd={stopEverything} onFinalize={stopEverything} children={<RightPedal style={styles.rightPedalSVG} />} />
+        </View>
         </View>
       </View>
       <StatusBar style="auto" />
