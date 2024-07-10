@@ -115,19 +115,18 @@ const ManualDrivingScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.stopButton} onPressIn={klaxon} onPressOut={klaxonOut}>
-        <Klaxon />
-      </TouchableOpacity>
       <Timer isRunning={isRunning} resetTimer={resetTimer} />
       <View style={styles.controls}>
         <View style={styles.arrows}>
-        <CustomPressable onBegin={goLeftOrRigth('left')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftArrow style={styles.leftArrowSVG} />} />
-        <CustomPressable onBegin={goLeftOrRigth()} onEnd={stopEverything} onFinalize={stopEverything} children={<RightArrow style={styles.rightArrowSVG} />} />
-        <View style={styles.pedals}>
-
-        <CustomPressable onBegin={goBackForWard('back')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftPedal style={styles.leftPedalSVG} />} />
-        <CustomPressable onBegin={handleRightPedalPress} onEnd={stopEverything} onFinalize={stopEverything} children={<RightPedal style={styles.rightPedalSVG} />} />
+          <CustomPressable onBegin={() => goLeftOrRigth('left')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftArrow style={styles.leftArrowSVG} />} />
+          <CustomPressable onBegin={() => goLeftOrRigth()} onEnd={stopEverything} onFinalize={stopEverything} children={<RightArrow style={styles.rightArrowSVG} />} />
         </View>
+        <CustomPressable style={styles.stopButton} onBegin={klaxon} onEnd={klaxonOut} onFinalize={klaxonOut} children={<Klaxon />} />
+        <View style={styles.pedals}>
+          <View style={styles.leftPedal}>
+          <CustomPressable onBegin={() => goBackForWard('back')} onEnd={() => stopEverything} onFinalize={stopEverything} children={<LeftPedal style={styles.leftPedalSVG} />} />
+          </View>
+          <CustomPressable onBegin={handleRightPedalPress} onEnd={() => stopEverything} onFinalize={stopEverything} children={<RightPedal style={styles.rightPedalSVG} />} />
         </View>
       </View>
       <StatusBar style="auto" />
