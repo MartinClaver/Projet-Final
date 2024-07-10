@@ -118,15 +118,18 @@ const ManualDrivingScreen = ({ navigation }) => {
       <Timer isRunning={isRunning} resetTimer={resetTimer} />
       <View style={styles.controls}>
         <View style={styles.arrows}>
-          <CustomPressable onBegin={() => goLeftOrRigth('left')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftArrow style={styles.leftArrowSVG} />} />
-          <CustomPressable onBegin={() => goLeftOrRigth()} onEnd={stopEverything} onFinalize={stopEverything} children={<RightArrow style={styles.rightArrowSVG} />} />
+          <CustomPressable onBegin={() => goLeftOrRigth('left')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftArrow style={styles.arrowButton}/>} />
+          <CustomPressable onBegin={() => goLeftOrRigth()} onEnd={stopEverything} onFinalize={stopEverything} children={<RightArrow style={styles.arrowButton}/>} />
         </View>
-        <CustomPressable style={styles.stopButton} onBegin={klaxon} onEnd={klaxonOut} onFinalize={klaxonOut} children={<Klaxon />} />
+        <View style={styles.klaxonButton}>
+         <CustomPressable onBegin={klaxon} onEnd={klaxonOut} onFinalize={klaxonOut} children={<Klaxon/>} />
+        </View>
+        
         <View style={styles.pedals}>
           <View style={styles.leftPedal}>
-          <CustomPressable onBegin={() => goBackForWard('back')} onEnd={() => stopEverything} onFinalize={stopEverything} children={<LeftPedal style={styles.leftPedalSVG} />} />
+          <CustomPressable onBegin={() => goBackForWard('back')} onEnd={() => stopEverything} onFinalize={stopEverything} children={<LeftPedal/>} />
           </View>
-          <CustomPressable onBegin={handleRightPedalPress} onEnd={() => stopEverything} onFinalize={stopEverything} children={<RightPedal style={styles.rightPedalSVG} />} />
+          <CustomPressable onBegin={handleRightPedalPress} onEnd={() => stopEverything} onFinalize={stopEverything} children={<RightPedal/>} />
         </View>
       </View>
       <StatusBar style="auto" />
@@ -147,6 +150,12 @@ const styles = StyleSheet.create({
     left: 10,
     padding: 10,
   },
+  klaxonButton: {
+    position: 'absolute',
+    bottom: 20,
+    left: 350,
+    padding: 10,
+  },
   controls: {
     position: 'absolute',
     bottom: 40,
@@ -164,16 +173,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     margin: 5,
   },
-  leftArrowSVG: {
-    width: 64,
-    height: 64,
-    fill: "white"
-  },
-  rightArrowSVG: {
-    width: 64,
-    height: 64,
-    fill: "white"
-  },
   pedals: {
     left: -20,
     flexDirection: 'row',
@@ -183,22 +182,6 @@ const styles = StyleSheet.create({
     marginRight: 25,
     bottom: -50
   },
-  leftPedalSVG: {
-    width: 100,
-    height: 100,
-    fill: "white"
-  },
-  rightPedalSVG: {
-    width: 130,
-    height: 130,
-    fill: "white",
-    marginRight: 25,
-  },
-  leftPedalSVG: {
-    width: 100,
-    height: 100,
-    fill: "white"
-  }
 });
 
 export default ManualDrivingScreen;
