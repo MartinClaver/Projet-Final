@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import LeftArrow from '../assets/LeftArrow.svg';
 import RightArrow from '../assets/RightArrow.svg';
 import LeftPedal from '../assets/LeftPedal.svg';
 import RightPedal from '../assets/RightPedal.svg';
 import StopSVG from '../assets/StopSVG.svg';
+import Klaxon from '../assets/Klaxon.svg';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import Timer from '../components/Timer';
+import CustomPressable from '../components/CustomPressable';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ManualDrivingScreen = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
+  const [isArrowPressed, setArrowPressed] = useState(false);
+  const [isPedalPressed, setPedalPressed] = useState(false);
 
   const [ws, setWs] = useState(null);
 
@@ -41,21 +45,28 @@ const ManualDrivingScreen = ({ navigation }) => {
   }, []);
 
   const goBackForWard = (direction) => {
-    const message = {
+    if(isArrowPressed && isPedalPressed) {
+      goBackAndTurn(direction);
+    } else {    const message = {
       cmd: 1,
       data: direction === "back" ? [-1, -1, -1, -1] : [1, 1, 1, 1],
     };
     ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);
+    console.log('Message sent:', message);}
   }
 
   const goLeftOrRigth = (direction) => {
-    const message = {
-      cmd: 1,
-      data: direction === "left" ? [-1, -1, 1, 1] : [1, 1, -1, -1],
-    };
-    ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);
+    if(isArrowPressed && isPedalPressed) {
+      goForwardAndTurn(direction);
+    } else {
+      const message = {
+        cmd: 1,
+        data: direction === "left" ? [-1, -1, 1, 1] : [1, 1, -1, -1],
+      };
+      ws.send(JSON.stringify(message));
+      console.log('Message sent:', message);
+      
+    }
   }
 
   const stopEverything = () => {
@@ -108,32 +119,58 @@ const ManualDrivingScreen = ({ navigation }) => {
     goBackForWard();
   };
 
+  const onPressIn = () => {
+    setArrowPressed(true);
+    setPedalPressed(true);
+  }
+
+  const onPressOut = () => {
+    setArrowPressed(false);
+    setPedalPressed(false);
+  }
+
+  const goForwardAndTurn = (direction) => {
+    const message = {
+        cmd: 1,
+        data: direction === "left" ? [-1, 1, 1, 1] : [1, 1, -1, 1],
+      };
+      ws.send(JSON.stringify(message));
+      console.log('Message sent:', message);
+  }
+
+    const goBackAndTurn = (direction) => {
+      const message = {
+        cmd: 1,
+        data: direction === "back" ? [1, -1, -1, -1] : [-1, -1, 1, -1],
+      };
+      ws.send(JSON.stringify(message));
+      console.log('Message sent:', message);
+  }
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.stopButton} onPressIn={klaxon} onPressOut={klaxonOut}>
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
       </TouchableOpacity>
       <Timer isRunning={isRunning} resetTimer={resetTimer} />
       <View style={styles.controls}>
         <View style={styles.arrows}>
-          <TouchableOpacity style={styles.arrowButton} onPressIn={() => goLeftOrRigth("left")} onPressOut={stopEverything}>
-            <LeftArrow style={styles.leftArrowSVG} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.arrowButton} onPressIn={() => goLeftOrRigth()} onPressOut={stopEverything}>
-            <RightArrow style={styles.leftArrowSVG} />
-          </TouchableOpacity>
+          <CustomPressable onPressOut={() =>  setArrowPressed(false)} onPressIn={() => setArrowPressed(true)} onBegin={() => goLeftOrRigth('left')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftArrow style={styles.arrowButton}/>} />
+          <CustomPressable onPressOut= {() =>  setArrowPressed(false)} onPressIn={() => setArrowPressed(true)} onBegin={() => goLeftOrRigth()} onEnd={stopEverything} onFinalize={stopEverything} children={<RightArrow style={styles.arrowButton}/>} />
         </View>
+        <View style={styles.klaxonButton}>
+         <CustomPressable onBegin={klaxon} onEnd={klaxonOut} onFinalize={klaxonOut} children={<Klaxon/>} />
+        </View>
+        
         <View style={styles.pedals}>
-          <TouchableOpacity style={styles.leftPedal} onPressIn={() => goBackForWard("back")} onPressOut={stopEverything}>
-            <LeftPedal style={styles.leftPedalSVG} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.pedalButton} onPressIn={handleRightPedalPress} onPressOut={stopEverything}>
-            <RightPedal style={styles.rightPedalSVG} />
-          </TouchableOpacity>
+          <View style={styles.leftPedal}>
+          <CustomPressable onPressOut= {() =>  setPedalPressed(false)} onPressIn={() => setPedalPressed(true)} onBegin={() => goBackForWard('back')} onEnd={() => stopEverything} onFinalize={stopEverything} children={<LeftPedal/>} />
+          </View>
+          <CustomPressable onPressOut= {() =>  setPedalPressed(false)} onPressIn={() => setPedalPressed(true)} onBegin={handleRightPedalPress} onEnd={() => stopEverything} onFinalize={stopEverything} children={<RightPedal/>} />
         </View>
       </View>
-      <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
+    
   );
 };
 
@@ -148,6 +185,12 @@ const styles = StyleSheet.create({
     top: 20,
     top: 20,
     left: 10,
+    padding: 10,
+  },
+  klaxonButton: {
+    position: 'absolute',
+    bottom: 20,
+    left: 350,
     padding: 10,
   },
   controls: {
@@ -167,16 +210,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     margin: 5,
   },
-  leftArrowSVG: {
-    width: 64,
-    height: 64,
-    fill: "white"
-  },
-  rightArrowSVG: {
-    width: 64,
-    height: 64,
-    fill: "white"
-  },
   pedals: {
     left: -20,
     flexDirection: 'row',
@@ -186,22 +219,6 @@ const styles = StyleSheet.create({
     marginRight: 25,
     bottom: -50
   },
-  leftPedalSVG: {
-    width: 100,
-    height: 100,
-    fill: "white"
-  },
-  rightPedalSVG: {
-    width: 130,
-    height: 130,
-    fill: "white",
-    marginRight: 25,
-  },
-  leftPedalSVG: {
-    width: 100,
-    height: 100,
-    fill: "white"
-  }
 });
 
 export default ManualDrivingScreen;
