@@ -110,7 +110,7 @@ const ManualDrivingScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.stopButton} onPressIn={klaxon} onPressOut={klaxonOut}>
+      <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
       </TouchableOpacity>
       <Timer isRunning={isRunning} resetTimer={resetTimer} />

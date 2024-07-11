@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { useEffect } from 'react';
 import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const EndedRace = ({ navigation }) => {
   useEffect(() => {
@@ -17,7 +18,7 @@ const EndedRace = ({ navigation }) => {
     };
   }, []);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.homeLogo}>
           <HomeLogo onPress={() => navigation.navigate('HomePage')} />
@@ -46,7 +47,7 @@ const EndedRace = ({ navigation }) => {
         </View>
       </View>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -57,14 +58,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    paddingTop: 60,
+    paddingTop: 10,
     flexDirection: 'row',
   },
   homeLogo: {
     position: 'absolute',
-    top: 20,
-    left: 0,
-    padding: 10,
+    top: 0,
+    left: 40,
+    padding: 0,
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
+    padding: 20
   },
   stats: {
     backgroundColor: '#24E8A0',
