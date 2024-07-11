@@ -14,10 +14,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const ManualDrivingScreen = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
-  const [isArrowPressed, setArrowPressed] = useState(false);
-  const [isPedalPressed, setPedalPressed] = useState(false);
+  const [arrowDirection, setArrowDirection] = useState(null);
+  const [pedalDirection, setPedalDirection] = useState(null);
 
-  const [ws, setWs] = useState(null);
+  /* const [ws, setWs] = useState(null);
 
   useEffect(() => {
     const ws = new WebSocket('ws://192.168.43.136/ws');
@@ -42,41 +42,7 @@ const ManualDrivingScreen = ({ navigation }) => {
     return () => {
       ws.close();
     };
-  }, []);
-
-  const goBackForWard = (direction) => {
-    if(isArrowPressed && isPedalPressed) {
-      goBackAndTurn(direction);
-    } else {    const message = {
-      cmd: 1,
-      data: direction === "back" ? [-1, -1, -1, -1] : [1, 1, 1, 1],
-    };
-    ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);}
-  }
-
-  const goLeftOrRigth = (direction) => {
-    if(isArrowPressed && isPedalPressed) {
-      goForwardAndTurn(direction);
-    } else {
-      const message = {
-        cmd: 1,
-        data: direction === "left" ? [-1, -1, 1, 1] : [1, 1, -1, -1],
-      };
-      ws.send(JSON.stringify(message));
-      console.log('Message sent:', message);
-      
-    }
-  }
-
-  const stopEverything = () => {
-    const message = {
-      cmd: 1,
-      data: [0, 0, 0, 0],
-    };
-    ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);
-  }
+  }, []); */
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -97,55 +63,99 @@ const ManualDrivingScreen = ({ navigation }) => {
   };
 
   const klaxon = () => {
-    const message = {
+    /* const message = {
       cmd: 7,
       data: 1,
     };
-    ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);
-  }
+    ws.send(JSON.stringify(message)); */
+    console.log('KLAXON');
+  };
 
   const klaxonOut = () => {
-    const stopMessage = {
+    /* const stopMessage = {
       cmd: 7,
       data: 0,
     };
-    ws.send(JSON.stringify(stopMessage));
-  }
-
-  const handleRightPedalPress = () => {
-    setIsRunning(true);
-    setResetTimer(false);
-    goBackForWard();
+    ws.send(JSON.stringify(stopMessage)); */
+    console.log('KLAXON STOP');
   };
 
-  const onPressIn = () => {
-    setArrowPressed(true);
-    setPedalPressed(true);
-  }
-
-  const onPressOut = () => {
-    setArrowPressed(false);
-    setPedalPressed(false);
-  }
-
-  const goForwardAndTurn = (direction) => {
-    const message = {
+  const onPressArrowIn = (direction) => {
+    setArrowDirection(direction);
+    if (pedalDirection) {
+      handleCombinedPress(direction, pedalDirection);
+    } else {
+      /* const message = {
         cmd: 1,
         data: direction === "left" ? [-1, 1, 1, 1] : [1, 1, -1, 1],
       };
-      ws.send(JSON.stringify(message));
-      console.log('Message sent:', message);
-  }
+      ws.send(JSON.stringify(message)); */
+      console.log(`TOURNE A ${direction.toUpperCase()}`);
+    }
+  };
 
-    const goBackAndTurn = (direction) => {
-      const message = {
+  const onPressArrowOut = () => {
+    setArrowDirection(null);
+    stopEverything();
+  };
+
+  const onPressPedalIn = (direction) => {
+    setPedalDirection(direction);
+    setIsRunning(true);
+    setResetTimer(false);
+    if (arrowDirection) {
+      handleCombinedPress(arrowDirection, direction);
+    } else {
+      /* const message = {
+        cmd: 1,
+        data: direction === "back" ? [-1, -1, -1, -1] : [1, 1, 1, 1],
+      };
+      ws.send(JSON.stringify(message)); */
+      console.log(`ROULE EN DIRECTION ${direction.toUpperCase()}`);
+    }
+  };
+
+  const onPressPedalOut = () => {
+    setPedalDirection(null);
+    stopEverything();
+  };
+
+  const handleCombinedPress = (arrowDirection, pedalDirection) => {
+    if (pedalDirection === 'forward') {
+      goForwardAndTurn(arrowDirection);
+    } else if (pedalDirection === 'back') {
+      goBackAndTurn(arrowDirection);
+    }
+  };
+
+  const goForwardAndTurn = (direction) => {
+    /* const message = {
+        cmd: 1,
+        data: direction === "left" ? [-1, 1, 1, 1] : [1, 1, -1, 1],
+      };
+      ws.send(JSON.stringify(message)); 
+      DATA A MODIFIER VIA DES TESTS VOITURE*/
+    console.log(`TOURNER EN AVANCANT: ${direction}`);
+  };
+
+  const goBackAndTurn = (direction) => {
+    /* const message = {
         cmd: 1,
         data: direction === "back" ? [1, -1, -1, -1] : [-1, -1, 1, -1],
       };
       ws.send(JSON.stringify(message));
-      console.log('Message sent:', message);
-  }
+      DATA A MODIFIER VIA DES TESTS VOITURE*/
+    console.log(`TOURNER EN RECULANT: ${direction}`);
+  };
+
+  const stopEverything = () => {
+    /* const message = {
+      cmd: 1,
+      data: [0, 0, 0, 0],
+    };
+    ws.send(JSON.stringify(message)); */
+    console.log('STOP');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -155,22 +165,40 @@ const ManualDrivingScreen = ({ navigation }) => {
       <Timer isRunning={isRunning} resetTimer={resetTimer} />
       <View style={styles.controls}>
         <View style={styles.arrows}>
-          <CustomPressable onPressOut={() =>  setArrowPressed(false)} onPressIn={() => setArrowPressed(true)} onBegin={() => goLeftOrRigth('left')} onEnd={stopEverything} onFinalize={stopEverything} children={<LeftArrow style={styles.arrowButton}/>} />
-          <CustomPressable onPressOut= {() =>  setArrowPressed(false)} onPressIn={() => setArrowPressed(true)} onBegin={() => goLeftOrRigth()} onEnd={stopEverything} onFinalize={stopEverything} children={<RightArrow style={styles.arrowButton}/>} />
+          <CustomPressable
+            onBegin={() => onPressArrowIn('left')}
+            onEnd={onPressArrowOut}
+            onFinalize={onPressArrowOut}
+            children={<LeftArrow style={styles.arrowButton} />}
+          />
+          <CustomPressable
+            onBegin={() => onPressArrowIn('right')}
+            onEnd={onPressArrowOut}
+            onFinalize={onPressArrowOut}
+            children={<RightArrow style={styles.arrowButton} />}
+          />
         </View>
         <View style={styles.klaxonButton}>
-         <CustomPressable onBegin={klaxon} onEnd={klaxonOut} onFinalize={klaxonOut} children={<Klaxon/>} />
+          <CustomPressable onBegin={klaxon} onEnd={klaxonOut} onFinalize={klaxonOut} children={<Klaxon />} />
         </View>
-        
         <View style={styles.pedals}>
           <View style={styles.leftPedal}>
-          <CustomPressable onPressOut= {() =>  setPedalPressed(false)} onPressIn={() => setPedalPressed(true)} onBegin={() => goBackForWard('back')} onEnd={() => stopEverything} onFinalize={stopEverything} children={<LeftPedal/>} />
+            <CustomPressable
+              onBegin={() => onPressPedalIn('back')}
+              onEnd={onPressPedalOut}
+              onFinalize={onPressPedalOut}
+              children={<LeftPedal />}
+            />
           </View>
-          <CustomPressable onPressOut= {() =>  setPedalPressed(false)} onPressIn={() => setPedalPressed(true)} onBegin={handleRightPedalPress} onEnd={() => stopEverything} onFinalize={stopEverything} children={<RightPedal/>} />
+          <CustomPressable
+            onBegin={() => onPressPedalIn('forward')}
+            onEnd={onPressPedalOut}
+            onFinalize={onPressPedalOut}
+            children={<RightPedal />}
+          />
         </View>
       </View>
     </SafeAreaView>
-    
   );
 };
 
@@ -182,7 +210,6 @@ const styles = StyleSheet.create({
   },
   stopButton: {
     position: 'absolute',
-    top: 20,
     top: 20,
     left: 10,
     padding: 10,
@@ -203,7 +230,6 @@ const styles = StyleSheet.create({
   },
   arrows: {
     bottom: -50,
-    bottom: -50,
     flexDirection: 'row',
   },
   arrowButton: {
@@ -217,7 +243,7 @@ const styles = StyleSheet.create({
   },
   leftPedal: {
     marginRight: 25,
-    bottom: -50
+    bottom: -50,
   },
 });
 
