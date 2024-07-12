@@ -131,7 +131,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const goForwardAndTurn = (direction) => {
     /* const message = {
         cmd: 1,
-        data: direction === "left" ? [-1, 1, 1, 1] : [1, 1, -1, 1],
+        data: direction === "left" ? [-1, -1, 1, 1] : [1, 1, -1, -1],
       };
       ws.send(JSON.stringify(message)); 
       DATA A MODIFIER VIA DES TESTS VOITURE*/
