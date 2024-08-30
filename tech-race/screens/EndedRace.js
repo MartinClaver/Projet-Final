@@ -5,7 +5,7 @@ import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const EndedRace = ({ navigation }) => {
+const EndedRace = ({ route, navigation }) => {
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
@@ -17,6 +17,8 @@ const EndedRace = ({ navigation }) => {
       ScreenOrientation.unlockAsync();
     };
   }, []);
+
+  const { timer } = route.params;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -32,7 +34,7 @@ const EndedRace = ({ navigation }) => {
         <View>
           <View style={StyleSheet.flatten([styles.stats, styles.timer])}>
             <Text style={styles.statTitle}>Timer</Text>
-            <Text style={styles.data}>Data</Text>
+            <Text style={styles.data}>{timer}</Text>
           </View>
           <View style={styles.speed}>
             <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>

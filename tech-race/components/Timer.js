@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-const Timer = ({ isRunning, resetTimer }) => {
-  const [timer, setTimer] = useState(0);
+const Timer = ({ isRunning, resetTimer, timer, setTimer }) => {
 
   useEffect(() => {
     let interval;
     if (isRunning) {
       interval = setInterval(() => {
-        setTimer(prevTimer => prevTimer + 1);
+        setTimer({totalTime: prevTimer => prevTimer + 1, ...timer});
       }, 1000);
-    } else if (!isRunning && timer !== 0) {
+    } else if (!isRunning && timer.totalTime !== 0) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isRunning, timer]);
+  }, [isRunning, timer.totalTime]);
 
   useEffect(() => {
     if (resetTimer) {

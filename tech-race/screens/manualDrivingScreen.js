@@ -12,11 +12,12 @@ import Timer from '../components/Timer';
 const ManualDrivingScreen = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
+  const [timer, setTimer] = useState({totalTime: 0, timeOn: 0, timeOff: 0});
 
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://192.168.43.136/ws');
+    const ws = new WebSocket('ws://92.168.43.136/ws');
     setWs(ws);
 
     ws.onopen = () => {
@@ -82,7 +83,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const handleStopPress = () => {
     setIsRunning(false);
     setResetTimer(true);
-    navigation.navigate('EndedRace');
+    navigation.navigate('EndedRace', {timer: timer});
   };
 
   const klaxon = () => {
@@ -113,7 +114,7 @@ const ManualDrivingScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
       </TouchableOpacity>
-      <Timer isRunning={isRunning} resetTimer={resetTimer} />
+      <Timer isRunning={isRunning} resetTimer={resetTimer} timer={timer} setTimer={setTimer}/>
       <View style={styles.controls}>
         <View style={styles.arrows}>
           <TouchableOpacity style={styles.arrowButton} onPressIn={() => goLeftOrRigth("left")} onPressOut={stopEverything}>
