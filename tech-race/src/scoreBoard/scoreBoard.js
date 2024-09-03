@@ -1,23 +1,13 @@
 import { FlatList, Text, View, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { supabase } from './supabaseClient'; 
 
 export default function ScoreBoard() {
   let title = 'Classement des scores';
 
-  const [scores, setScores] = useState([
-    { classement: 1, score: '1:30', nom: 'Clément' },
-    { classement: 2, score: '1:20', nom: 'Nelson' },
-    { classement: 3, score: '1:10', nom: 'Wilson' },
-    { classement: 4, score: '1:00', nom: 'Arthur' },
-    { classement: 5, score: '1:60', nom: 'Didier' },
-    { classement: 6, score: '4:12', nom: 'Serge'}
-  ]);
-
-  
-
+  const [scores, setScores] = useState([]);
   const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
-  
-  // function for getRandomColor
+
   const getRandomColor = (excludeColor) => {
     let color;
     do {
@@ -26,24 +16,48 @@ export default function ScoreBoard() {
     return color;
   };
 
-  // useEffect for to set each line with a random color 
+  async function fetchStats() {
+    try {
+      const response = await fetch('/test');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const stats = await response.json();
+      console.log('Stats:', stats);
+      return stats;
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  }
+
   useEffect(() => {
-    setScores(prevScores => {
-      let lastColor = null;
-      return prevScores.map(score => {
-        const newColor = getRandomColor(lastColor);
-        lastColor = newColor;
-        return {
-          ...score,
-          color: newColor,
-          nom: score.nom.toUpperCase(),
-          score: score.score.toUpperCase(),
-        };
-      });
-    });
+    const fetchScores = async () => {
+      const { data, error } = await supabase
+        .from('stats')
+        .select('*')
+        .order('classement', { ascending: true });  
+
+      if (error) {
+        console.error('Error fetching scores:', error);
+      } else {
+        let lastColor = null;
+        const StatsScores = data.map(score => {
+          const newColor = getRandomColor(lastColor);
+          lastColor = newColor;
+          return {
+            classement: score.classement,
+            score: score.score.toUpperCase(),
+            nom: score.nom.toUpperCase(),
+            color: newColor,
+          };
+        });
+        setScores(StatsScores);
+      }
+    };
+
+    fetchScores();
   }, []);
 
-  // function type
   const scoreColumn = (dataScore, key) => (
     <FlatList
       data={dataScore}
