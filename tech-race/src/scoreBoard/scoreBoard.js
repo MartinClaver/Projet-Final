@@ -1,67 +1,61 @@
 import { FlatList, Text, View, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient'; 
+import { supabase } from '../supabaseClient';
 
 export default function ScoreBoard() {
+
   let title = 'Classement des scores';
 
-  const [scores, setScores] = useState([]);
-  const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
-
-  const getRandomColor = (excludeColor) => {
-    let color;
-    do {
-      color = colors[Math.floor(Math.random() * colors.length)];
-    } while (color === excludeColor);
-    return color;
-  };
+    // function for getRandomColor
+    const getRandomColor = (excludeColor) => {
+        let color;
+        do {
+          color = colors[Math.floor(Math.random() * colors.length)];
+        } while (color === excludeColor);
+        return color;
+      };
 
   async function fetchStats() {
-    try {
-      const response = await fetch('/test');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const stats = await response.json();
-      console.log('Stats:', stats);
-      return stats;
-    } catch (error) {
-      console.error('Error fetching stats:', error);
+
+    const { data, error } = await supabase
+        .from('stats')
+        .select('*')
+
+    if (error) {
+        console.error('sa marche pas la récup de donnée :', error);
+        return []
+    } else {
+        console.log('sa marche chef :', data);
+        return data
     }
   }
 
-  useEffect(() => {
-    const fetchScores = async () => {
-      const { data, error } = await supabase
-        .from('stats')
-        .select('*')
-        .order('classement', { ascending: true });  
+  const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
 
-      if (error) {
-        console.error('Error fetching scores:', error);
-      } else {
+  // useEffect for to set each line with a random color 
+  useEffect(() => {
+    const dataStats = async () => {
+        const data = await fetchStats;
         let lastColor = null;
-        const StatsScores = data.map(score => {
-          const newColor = getRandomColor(lastColor);
-          lastColor = newColor;
-          return {
-            classement: score.classement,
-            score: score.score.toUpperCase(),
-            nom: score.nom.toUpperCase(),
-            color: newColor,
-          };
+        const colorStats = data.map(entry => {
+            const newColor = getRandomColor(lastColor);
+            lastColor = newColor
+            return {
+                ...entry,
+                color: newColor,
+            };
         });
-        setScores(StatsScores);
-      }
+        setStats(colorStats);
     };
 
-    fetchScores();
+    dataStats();
   }, []);
 
+  // Fonction pour rendre une colonne de scores
   const scoreColumn = (dataScore, key) => (
     <FlatList
       data={dataScore}
-      keyExtractor={(item) => item.classement.toString()}
+      keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <View style={styles.itemContainer}>
           <Text style={[styles.itemText, { color: item.color }]}>
@@ -81,24 +75,18 @@ export default function ScoreBoard() {
         </View>
         <View style={styles.row}>
           <View style={styles.columnHeader}>
-            <Text style={styles.headerText}>Classement</Text>
+            <Text style={styles.headerText}>Date</Text>
           </View>
           <View style={styles.columnHeader}>
-            <Text style={styles.headerText}>Score</Text>
-          </View>
-          <View style={styles.columnHeader}>
-            <Text style={styles.headerText}>Nom</Text>
+            <Text style={styles.headerText}>Temps</Text>
           </View>
         </View>
         <View style={styles.row}>
           <View style={styles.column}>
-            {scoreColumn(scores, 'classement')}
+            {scoreColumn(stats, 'created_at')}
           </View>
           <View style={styles.column}>
-            {scoreColumn(scores, 'score')}
-          </View>
-          <View style={styles.column}>
-            {scoreColumn(scores, 'nom')}
+            {scoreColumn(stats, 'sum-speed')}
           </View>
         </View>
       </View>

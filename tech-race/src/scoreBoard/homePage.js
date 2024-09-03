@@ -7,7 +7,7 @@ import Manual from '../assets/Manual.svg';
 import ButtonDefault from '../components/ButtonDefault';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import ScoreBoard from './ScoreBoard';
+import scoreBoard from './scoreBoard';
 
 const HomePage = () => {
   const navigation = useNavigation();
