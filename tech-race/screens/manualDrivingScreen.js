@@ -17,7 +17,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const [arrowDirection, setArrowDirection] = useState(null);
   const [pedalDirection, setPedalDirection] = useState(null);
 
-  /* const [ws, setWs] = useState(null);
+  const [ws, setWs] = useState(null);
 
   useEffect(() => {
     const ws = new WebSocket('ws://192.168.43.136/ws');
@@ -42,7 +42,7 @@ const ManualDrivingScreen = ({ navigation }) => {
     return () => {
       ws.close();
     };
-  }, []); */
+  }, []);
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -63,20 +63,20 @@ const ManualDrivingScreen = ({ navigation }) => {
   };
 
   const klaxon = () => {
-    /* const message = {
+    const message = {
       cmd: 7,
       data: 1,
     };
-    ws.send(JSON.stringify(message)); */
+    ws.send(JSON.stringify(message));
     console.log('KLAXON');
   };
 
   const klaxonOut = () => {
-    /* const stopMessage = {
+    const stopMessage = {
       cmd: 7,
       data: 0,
     };
-    ws.send(JSON.stringify(stopMessage)); */
+    ws.send(JSON.stringify(stopMessage));
     console.log('KLAXON STOP');
   };
 
@@ -85,11 +85,11 @@ const ManualDrivingScreen = ({ navigation }) => {
     if (pedalDirection) {
       handleCombinedPress(direction, pedalDirection);
     } else {
-      /* const message = {
+      const message = {
         cmd: 1,
         data: direction === "left" ? [-1, 1, 1, 1] : [1, 1, -1, 1],
       };
-      ws.send(JSON.stringify(message)); */
+      ws.send(JSON.stringify(message));
       console.log(`TOURNE A ${direction.toUpperCase()}`);
     }
   };
@@ -106,11 +106,11 @@ const ManualDrivingScreen = ({ navigation }) => {
     if (arrowDirection) {
       handleCombinedPress(arrowDirection, direction);
     } else {
-      /* const message = {
+      const message = {
         cmd: 1,
         data: direction === "back" ? [-1, -1, -1, -1] : [1, 1, 1, 1],
       };
-      ws.send(JSON.stringify(message)); */
+      ws.send(JSON.stringify(message));
       console.log(`ROULE EN DIRECTION ${direction.toUpperCase()}`);
     }
   };
@@ -129,31 +129,29 @@ const ManualDrivingScreen = ({ navigation }) => {
   };
 
   const goForwardAndTurn = (direction) => {
-    /* const message = {
-        cmd: 1,
-        data: direction === "left" ? [-1, -1, 1, 1] : [1, 1, -1, -1],
-      };
-      ws.send(JSON.stringify(message)); 
-      DATA A MODIFIER VIA DES TESTS VOITURE*/
+    const message = {
+      cmd: 1,
+      data: direction === "left" ? [-1, -1, 1, 1] : [1, 1, -1, -1],
+    };
+    ws.send(JSON.stringify(message));
     console.log(`TOURNER EN AVANCANT: ${direction}`);
   };
 
   const goBackAndTurn = (direction) => {
-    /* const message = {
-        cmd: 1,
-        data: direction === "back" ? [1, -1, -1, -1] : [-1, -1, 1, -1],
-      };
-      ws.send(JSON.stringify(message));
-      DATA A MODIFIER VIA DES TESTS VOITURE*/
+    const message = {
+      cmd: 1,
+      data: direction === "back" ? [1, -1, -1, -1] : [-1, -1, 1, -1],
+    };
+    ws.send(JSON.stringify(message));
     console.log(`TOURNER EN RECULANT: ${direction}`);
   };
 
   const stopEverything = () => {
-    /* const message = {
+    const message = {
       cmd: 1,
       data: [0, 0, 0, 0],
     };
-    ws.send(JSON.stringify(message)); */
+    ws.send(JSON.stringify(message));
     console.log('STOP');
   };
 
