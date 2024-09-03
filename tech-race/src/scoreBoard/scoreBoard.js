@@ -6,7 +6,7 @@ export default function ScoreBoard() {
 
   let title = 'Classement des scores';
 
-    // function for getRandomColor
+    // function pour la couleur aléatoire
     const getRandomColor = (excludeColor) => {
         let color;
         do {
@@ -32,7 +32,6 @@ export default function ScoreBoard() {
 
   const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
 
-  // useEffect for to set each line with a random color 
   useEffect(() => {
     const dataStats = async () => {
         const data = await fetchStats;
