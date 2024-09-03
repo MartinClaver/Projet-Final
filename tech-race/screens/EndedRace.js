@@ -1,8 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useEffect } from 'react';
 import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const EndedRace = ({ navigation }) => {
   useEffect(() => {
@@ -17,7 +17,7 @@ const EndedRace = ({ navigation }) => {
     };
   }, []);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.homeLogo}>
           <HomeLogo onPress={() => navigation.navigate('HomePage')} />
@@ -45,8 +45,8 @@ const EndedRace = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
+
   );
 }
 
