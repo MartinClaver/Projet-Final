@@ -14,7 +14,7 @@ const HomePage = () => {
   const [isManual, setIsManual] = useState(true)
 
   const displayScoreboard = () => {
-    navigation.navigate('Scoreboard');
+    navigation.navigate(scoreBoard);
   }
 
   return (
