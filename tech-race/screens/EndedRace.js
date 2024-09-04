@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { supabase } from '../supabaseClient';
 
 const EndedRace = ({ route, navigation }) => {
   useEffect(() => {
@@ -19,6 +20,10 @@ const EndedRace = ({ route, navigation }) => {
   }, []);
 
   const { timer } = route.params;
+  const date = new Date();
+  const today = `${date.getDay()+1}/${date.getMonth()+1}/${date.getFullYear()}`
+  const insertInSupabase = async (table, data) => { const { error } = await supabase.from(table).insert(data)}
+  insertInSupabase('timer', {timer: timer, date: today});
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -34,16 +39,16 @@ const EndedRace = ({ route, navigation }) => {
         <View>
           <View style={StyleSheet.flatten([styles.stats, styles.timer])}>
             <Text style={styles.statTitle}>Timer</Text>
-            <Text style={styles.data}>{timer}</Text>
+            <Text style={styles.data}>{timer}s</Text>
           </View>
           <View style={styles.speed}>
             <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
-              <Text style={styles.statTitle}>Average Speed</Text>
+              <Text style={styles.statTitle}>Moving Time</Text>
               <Text style={styles.data}>Data</Text>
             </View>
             <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
-              <Text style={styles.statTitle}>Max Speed</Text>
-              <Text style={styles.data}>Data</Text>
+              <Text style={styles.statTitle}>Date</Text>
+              <Text style={styles.data}>{today}</Text>
             </View>
           </View>
         </View>
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   data: {
-    fontSize: 32,
+    fontSize: 21,
     fontWeight: 'bold',
   },
   carImage: {

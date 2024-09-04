@@ -12,12 +12,12 @@ import Timer from '../components/Timer';
 const ManualDrivingScreen = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
-  const [timer, setTimer] = useState({totalTime: 0, timeOn: 0, timeOff: 0});
+  const [timer, setTimer] = useState(0);
 
   const [ws, setWs] = useState(null);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://92.168.43.136/ws');
+    const ws = new WebSocket('ws://192.168.43.136/ws');
     setWs(ws);
 
     ws.onopen = () => {

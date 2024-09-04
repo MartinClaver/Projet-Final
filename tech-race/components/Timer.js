@@ -7,13 +7,13 @@ const Timer = ({ isRunning, resetTimer, timer, setTimer }) => {
     let interval;
     if (isRunning) {
       interval = setInterval(() => {
-        setTimer({totalTime: prevTimer => prevTimer + 1, ...timer});
+        setTimer(prevTimer => prevTimer + 1);
       }, 1000);
-    } else if (!isRunning && timer.totalTime !== 0) {
+    } else if (!isRunning && timer !== 0) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isRunning, timer.totalTime]);
+  }, [isRunning, timer]);
 
   useEffect(() => {
     if (resetTimer) {
