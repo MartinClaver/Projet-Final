@@ -22,8 +22,9 @@ const EndedRace = ({ route, navigation }) => {
   const { timer } = route.params;
   const date = new Date();
   const today = `${date.getDay()+1}/${date.getMonth()+1}/${date.getFullYear()}`
+  const date_in_db = date.toISOString();
   const insertInSupabase = async (table, data) => { const { error } = await supabase.from(table).insert(data)}
-  insertInSupabase('timer', {timer: timer, date: today});
+  insertInSupabase('stats', {created_at: date_in_db, 'total-time': timer});
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -43,7 +44,7 @@ const EndedRace = ({ route, navigation }) => {
           </View>
           <View style={styles.speed}>
             <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
-              <Text style={styles.statTitle}>Moving Time</Text>
+              <Text style={styles.statTitle}>Motion Time</Text>
               <Text style={styles.data}>Data</Text>
             </View>
             <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
