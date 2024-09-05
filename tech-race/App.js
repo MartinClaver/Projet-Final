@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ManualDrivingScreen from './screens/ManualDrivingScreen.js';
+import ManualDrivingScreen from './screens/manualDrivingScreen.js';
 import HomePage from './screens/HomePage.js';
 import BotDrivingView from './screens/BotDrivingView.js';
 import EndedRace from './screens/EndedRace';

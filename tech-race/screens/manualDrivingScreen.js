@@ -11,8 +11,11 @@ import Timer from '../components/Timer';
 
 const ManualDrivingScreen = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
+  const [isMoving, setIsMoving] = useState(0);
   const [resetTimer, setResetTimer] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [motionTimer, setMotionTimer] = useState(0);
+
 
   const [ws, setWs] = useState(null);
 
@@ -66,6 +69,7 @@ const ManualDrivingScreen = ({ navigation }) => {
     };
     ws.send(JSON.stringify(message));
     console.log('Message sent:', message);
+    setIsMoving(false);
   }
 
   useEffect(() => {
@@ -83,7 +87,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const handleStopPress = () => {
     setIsRunning(false);
     setResetTimer(true);
-    navigation.navigate('EndedRace', {timer: timer});
+    navigation.navigate('EndedRace', {timer: timer, motionTimer: motionTimer});
   };
 
   const klaxon = () => {
@@ -105,6 +109,7 @@ const ManualDrivingScreen = ({ navigation }) => {
 
   const handleRightPedalPress = () => {
     setIsRunning(true);
+    setIsMoving(true);
     setResetTimer(false);
     goBackForWard();
   };
@@ -114,7 +119,7 @@ const ManualDrivingScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
       </TouchableOpacity>
-      <Timer isRunning={isRunning} resetTimer={resetTimer} timer={timer} setTimer={setTimer}/>
+      <Timer isRunning={isRunning} resetTimer={resetTimer} timer={timer} setTimer={setTimer} isMoving={isMoving} motionTimer={motionTimer} setMotionTimer={setMotionTimer}/>
       <View style={styles.controls}>
         <View style={styles.arrows}>
           <TouchableOpacity style={styles.arrowButton} onPressIn={() => goLeftOrRigth("left")} onPressOut={stopEverything}>
