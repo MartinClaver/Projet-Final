@@ -7,10 +7,15 @@ import Manual from '../assets/Manual.svg';
 import ButtonDefault from '../components/ButtonDefault';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ScoreBoard from './ScoreBoard';
 
 const HomePage = () => {
   const navigation = useNavigation();
   const [isManual, setIsManual] = useState(true)
+
+  const displayScoreboard = () => {
+    navigation.navigate(ScoreBoard);
+  }
 
   return (
     
@@ -19,9 +24,11 @@ const HomePage = () => {
         	<View style={styles.svgLogo}>
         		<LogoApp/>
         	</View>
-			<View style={styles.svgScores}>
-				<Scores/>
-			</View>
+          <View style={styles.svgScores}>
+            <TouchableOpacity onPress={displayScoreboard}>
+              <Scores />
+            </TouchableOpacity>
+			    </View>
       	</View>
 		<Image
 			source={require('../assets/Car.png')}
