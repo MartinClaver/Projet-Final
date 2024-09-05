@@ -7,14 +7,13 @@ import Manual from '../assets/Manual.svg';
 import ButtonDefault from '../components/ButtonDefault';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import ScoreBoard from './ScoreBoard';
 
 const HomePage = () => {
   const navigation = useNavigation();
   const [isManual, setIsManual] = useState(true)
 
   const displayScoreboard = () => {
-    navigation.navigate(ScoreBoard);
+    navigation.navigate('ScoreBoard');
   }
 
   return (

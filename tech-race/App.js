@@ -4,6 +4,7 @@ import ManualDrivingScreen from './screens/manualDrivingScreen.js';
 import HomePage from './screens/homePage.js';
 import BotDrivingView from './screens/botDrivingView.js';
 import EndedRace from './screens/EndedRace';
+import ScoreBoard from './screens/ScoreBoard.js';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +23,7 @@ export default function App() {
           <Stack.Screen name="Manual" component={ManualDrivingScreen} />
           <Stack.Screen name="BotView" component={BotDrivingView} />
           <Stack.Screen name="EndedRace" component={EndedRace} />
+          <Stack.Screen name="ScoreBoard" component={ScoreBoard} />
         </Stack.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>
