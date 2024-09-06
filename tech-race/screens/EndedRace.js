@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { supabase } from '../supabaseClient';
 import { formatTime } from '../components/Timer';
 
 const EndedRace = ({ route, navigation }) => {
@@ -86,7 +85,6 @@ const EndedRace = ({ route, navigation }) => {
           </View>
         </View>
       </View>
-      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
