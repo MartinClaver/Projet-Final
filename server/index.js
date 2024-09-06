@@ -37,7 +37,7 @@ app.get('/test', async (req, res) => {
     }
 });
 
-app.post('/api/insertStats', async (req, res) => {
+app.post('/insertStats', async (req, res) => {
     const { created_at, total_time, motion_time, max_speed, distance } = req.body;
 
     const { data, error } = await supabase

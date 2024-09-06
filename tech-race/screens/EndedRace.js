@@ -25,7 +25,7 @@ const EndedRace = ({ route, navigation }) => {
 
   const insertRaceStats = async (data) => {
     try {
-      const response = await fetch('http://localhost:4000/api/insertStats', {
+      const response = await fetch('http://localhost:4000/insertStats', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
