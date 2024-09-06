@@ -105,6 +105,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   homeLogo: {
+    width: "80",
+    height: "80",
     position: 'absolute',
     top: 0,
     left: 40,

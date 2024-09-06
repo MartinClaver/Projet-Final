@@ -1,15 +1,23 @@
-import { FlatList, Text, View, StyleSheet } from 'react-native';
+import { FlatList, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { formatTime } from '../components/Timer';
+import HomeLogo from "../assets/HomeLogo.svg";
 
-export default function ScoreBoard() {
-
+const ScoreBoard = ({ navigation }) => {
   const title = 'Classement des scores';
   const [stats, setStats] = useState([]);
+  const [sortOrder, setSortOrder] = useState('desc');
   const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
 
-  // function pour la couleur aléatoire
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   const getRandomColor = (excludeColor) => {
     let color;
     do {
@@ -22,14 +30,22 @@ export default function ScoreBoard() {
     const { data, error } = await supabase
       .from('stats')
       .select('*')
-
     if (error) {
       console.error('Erreur data:', error);
       return []
     }
-
     return data
   }
+
+  const sortDataByTime = (data, order) => {
+    return [...data].sort((a, b) => {
+      return order === 'asc' ? a.total_time - b.total_time : b.total_time - a.total_time;
+    });
+  };
+
+  const toggleSortOrder = () => {
+    setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+  };
 
   useEffect(() => {
     const dataStats = async () => {
@@ -43,36 +59,19 @@ export default function ScoreBoard() {
           color: newColor,
         };
       });
-      setStats(colorStats);
+      setStats(sortDataByTime(colorStats, sortOrder));
     };
-
     dataStats();
-  }, []);
-
-  // Fonction pour rendre une colonne de scores
-  // const scoreColumn = (dataScore, key) => {
-
-  //   return (
-  //     <FlatList
-  //       data={dataScore}
-  //       keyExtractor={(item) => item.id.toString()}
-  //       renderItem={({ item }) => (
-  //         <View style={styles.itemContainer}>
-  //           <Text style={[styles.itemText, { color: item.color }]}>
-  //             {data}
-  //           </Text>
-  //         </View>
-  //       )}
-  //       scrollEnabled={false}
-  //     />
-  //   )
-  // };
+  }, [sortOrder]);
 
   return (
     <View style={styles.container}>
       <View style={styles.flexContainer}>
         <View>
           <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={styles.homeLogo}>
+          <HomeLogo onPress={() => navigation.goBack()} />
         </View>
         <View style={styles.row}>
           <View style={styles.columnHeader}>
@@ -82,20 +81,27 @@ export default function ScoreBoard() {
             <Text style={styles.headerText}>Temps</Text>
           </View>
         </View>
+        <View style={styles.sortButtonContainer}>
+          <TouchableOpacity onPress={toggleSortOrder} style={styles.sortButton}>
+            <Text style={styles.sortButtonText}>
+              Temps : {sortOrder === 'asc' ? '↑ Croissant' : '↓ Décroissant'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={stats}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.itemContainer}>
               <Text style={[styles.itemText, { color: item.color }]}>
-                {item.created_at.toISOString()}
+                {formatDate(item.created_at)}
               </Text>
               <Text style={[styles.itemText, { color: item.color }]}>
                 {formatTime(item.total_time)}
               </Text>
             </View>
           )}
-          scrollEnabled={false}
+          scrollEnabled={true}
         />
       </View>
     </View>
@@ -107,17 +113,24 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 56,
     backgroundColor: '#1e293b',
-    borderRadius: 15,
-    height: '100%',
+    flex: 1,
   },
   flexContainer: {
     flex: 1,
+  },
+  homeLogo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    padding: 0,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   title: {
     textAlign: 'center',
     marginBottom: 16,
     color: 'white',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '700',
   },
   row: {
@@ -125,9 +138,11 @@ const styles = StyleSheet.create({
     borderColor: '#d1d5db',
   },
   columnHeader: {
-    width: '33%',
+    flex: 1,
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderColor: '#d1d5db',
+    paddingVertical: 8,
   },
   headerText: {
     textAlign: 'center',
@@ -138,12 +153,32 @@ const styles = StyleSheet.create({
     width: '33%',
   },
   itemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: '#d1d5db',
     paddingVertical: 8,
+    paddingHorizontal: 16,
   },
   itemText: {
     textAlign: 'center',
     fontSize: 14,
   },
+  sortButtonContainer: {
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  sortButton: {
+    backgroundColor: '#4a5568',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 5,
+  },
+  sortButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
 });
+
+export default ScoreBoard;
