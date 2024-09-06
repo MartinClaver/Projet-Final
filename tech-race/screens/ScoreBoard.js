@@ -1,6 +1,7 @@
 import { FlatList, Text, View, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { formatTime } from '../components/Timer';
 
 export default function ScoreBoard() {
 
@@ -49,20 +50,33 @@ export default function ScoreBoard() {
   }, []);
 
   // Fonction pour rendre une colonne de scores
-  const scoreColumn = (dataScore, key) => (
-    <FlatList
-      data={dataScore}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.itemContainer}>
-          <Text style={[styles.itemText, { color: item.color }]}>
-            {item[key]}
-          </Text>
-        </View>
-      )}
-      scrollEnabled={false}
-    />
-  );
+  const scoreColumn = (dataScore, key) => {
+    let data;
+    switch (key) {
+      case ('created_at'):
+        const formatedDate = date.toISOString();
+        data = formatedDate
+        break;
+      case ('total-time'):
+        const formattedTimer = formatTime(timer);
+        data = formattedTimer
+        break;
+    }
+    return (
+      <FlatList
+        data={dataScore}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.itemContainer}>
+            <Text style={[styles.itemText, { color: item.color }]}>
+              {data}
+            </Text>
+          </View>
+        )}
+        scrollEnabled={false}
+      />
+    )
+  };
 
   return (
     <View style={styles.container}>
@@ -83,7 +97,7 @@ export default function ScoreBoard() {
             {scoreColumn(stats, 'created_at')}
           </View>
           <View style={styles.column}>
-            {scoreColumn(stats, 'sum-speed')}
+            {scoreColumn(stats, 'total-time')}
           </View>
         </View>
       </View>
@@ -107,7 +121,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: 'white',
     fontSize: 24,
-    fontWeight: 700,
+    fontWeight: '700',
   },
   row: {
     flexDirection: 'row',
