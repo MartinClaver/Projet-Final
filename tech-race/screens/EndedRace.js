@@ -4,6 +4,7 @@ import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { formatTime } from '../components/Timer';
+import { supabase } from '../supabaseClient';
 
 const EndedRace = ({ route, navigation }) => {
   const { timer, motionTimer } = route.params;
