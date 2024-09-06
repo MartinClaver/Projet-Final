@@ -83,6 +83,7 @@ const ManualDrivingScreen = ({ navigation }) => {
     console.log('KLAXON STOP');
   };
 
+  // Gauche droite ou gauche droite + pédale frein ou accélération
   const onPressArrowIn = (direction) => {
     setArrowDirection(direction);
     if (pedalDirection) {
@@ -102,6 +103,7 @@ const ManualDrivingScreen = ({ navigation }) => {
     stopEverything();
   };
 
+  // recule avance ou recule avance et tourne
   const onPressPedalIn = (direction) => {
     setPedalDirection(direction);
     setIsRunning(true);
