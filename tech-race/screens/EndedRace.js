@@ -25,7 +25,7 @@ const EndedRace = ({ route, navigation }) => {
   const today = `${date.getDay()+1}/${date.getMonth()+1}/${date.getFullYear()}`
   const date_in_db = date.toISOString();
   const insertInSupabase = async (table, data) => { const { error } = await supabase.from(table).insert(data)}
-  insertInSupabase('stats', {created_at: date_in_db, 'total-time': timer, motion_time: motionTimer});
+  insertInSupabase('stats', {created_at: date_in_db, 'total-time': timer, motion_time: motionTimer, 'max-speed': 1, distance: motionTimer});
   const formattedTimer = formatTime(timer);
   const formattedMotionTimer = formatTime(motionTimer);
   return (
