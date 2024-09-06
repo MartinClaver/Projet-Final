@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useEffect } from 'react';
 import HomeLogo from "../assets/HomeLogo.svg";
@@ -6,7 +5,6 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '../supabaseClient';
 import { formatTime } from '../components/Timer';
-
 const EndedRace = ({ route, navigation }) => {
   useEffect(() => {
     const lockOrientation = async () => {
