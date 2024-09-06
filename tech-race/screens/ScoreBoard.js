@@ -4,54 +4,49 @@ import { supabase } from '../supabaseClient';
 
 export default function ScoreBoard() {
 
-  let title = 'Classement des scores';
+  const title = 'Classement des scores';
   const [stats, setStats] = useState([]);
   const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
 
-    // function pour la couleur aléatoire
-    const getRandomColor = (excludeColor) => {
-        let color;
-        do {
-          color = colors[Math.floor(Math.random() * colors.length)];
-        } while (color === excludeColor);
-        return color;
-      };
+  // function pour la couleur aléatoire
+  const getRandomColor = (excludeColor) => {
+    let color;
+    do {
+      color = colors[Math.floor(Math.random() * colors.length)];
+    } while (color === excludeColor);
+    return color;
+  };
 
-      async function fetchStats() {
+  const fetchStats = async () => {
+    const { data, error } = await supabase
+      .from('stats')
+      .select('*')
 
-        const { data, error } = await supabase
-            .from('stats')
-            .select('*')
-    
-        if (error) {
-            console.error('sa marche pas la récup de donnée :', error);
-            return []
-        } else {
-            console.log('sa marche chef :', data);
-            return data
-        }
-      }
+    if (error) {
+      console.error('Erreur data:', error);
+      return []
+    }
 
-      useEffect(() => {
-        const dataStats = async () => {
-          const data = await fetchStats();
-          let lastColor = null;
-          const colorStats = data.map(entry => {
-              const newColor = getRandomColor(lastColor);
-              lastColor = newColor;
-              return {
-                  ...entry,
-                  color: newColor,
-              };
-          });
-          setStats(colorStats);
+    return data
+  }
+
+  useEffect(() => {
+    const dataStats = async () => {
+      const data = await fetchStats();
+      let lastColor = null;
+      const colorStats = data.map(entry => {
+        const newColor = getRandomColor(lastColor);
+        lastColor = newColor;
+        return {
+          ...entry,
+          color: newColor,
         };
-      
-        dataStats();
-      }, []);
-      
+      });
+      setStats(colorStats);
+    };
 
-
+    dataStats();
+  }, []);
 
   // Fonction pour rendre une colonne de scores
   const scoreColumn = (dataScore, key) => (
