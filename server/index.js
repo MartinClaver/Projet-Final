@@ -37,22 +37,23 @@ app.get('/test', async (req, res) => {
     }
 });
 
-app.post('/insertStats', async (req, res) => {
-    const { created_at, total_time, motion_time, max_speed, distance } = req.body;
+// Expo GO et localhost pas compatible
+// app.post('/insertStats', async (req, res) => {
+//     const { date_in_db, total_time, motionTimer, max_speed } = req.body;
 
-    const { data, error } = await supabase
-        .from('stats')
-        .insert([
-            { created_at, 'total-time': total_time, motion_time, 'max-speed': max_speed, distance }
-        ]);
+//     const { data, error } = await supabase
+//         .from('stats')
+//         .insert([
+//             { created_at, 'total-time': total_time, motion_time, 'max-speed': max_speed, distance }
+//         ]);
 
-    if (error) {
-        console.error('Error inserting stats:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-        res.status(201).json(data);
-    }
-});
+//     if (error) {
+//         console.error('Error inserting stats:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     } else {
+//         res.status(201).json(data);
+//     }
+// });
 
 const server = app.listen(port, () => {
     console.log(`HTTP server running on http://localhost:${port}`);

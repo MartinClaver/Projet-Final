@@ -23,38 +23,42 @@ const EndedRace = ({ route, navigation }) => {
   }, []);
 
 
-  const insertRaceStats = async (data) => {
-    try {
-      const response = await fetch('http://localhost:4000/insertStats', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+  // Expo GO et localhost pas compatible
+  // const insertRaceStats = async (data) => {
+  //   try {
+  //     const response = await fetch('http://localhost:4000/insertStats', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(data),
+  //     });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
 
-      const result = await response.json();
-      console.log('Race stats inserted:', result);
-    } catch (error) {
-      console.error('Error inserting race stats:', error);
-    }
-  };
+  //     const result = await response.json();
+  //     console.log('Race stats inserted:', result);
+  //   } catch (error) {
+  //     console.error('Error inserting race stats:', error);
+  //   }
+  // };
+
+  const insertInSupabase = async (table, data) => { const { error } = await supabase.from(table).insert(data) }
 
   const date_in_db = date.toISOString();
   const formattedTimer = formatTime(timer);
   const formattedMotionTimer = formatTime(motionTimer);
 
-  insertRaceStats({
-    created_at: date_in_db,
-    total_time: timer,
-    motion_time: motionTimer,
-    max_speed: 1,
-    distance: motionTimer
-  });
+  insertInSupabase('stats',
+    {
+      created_at: date_in_db,
+      'total-time': timer,
+      motion_time: motionTimer,
+      'max-speed': 1,
+      distance: motionTimer
+    });
 
   return (
     <SafeAreaView style={styles.container}>
