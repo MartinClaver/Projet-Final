@@ -55,9 +55,9 @@ const EndedRace = ({ route, navigation }) => {
   insertInSupabase('stats',
     {
       created_at: date_in_db,
-      'total-time': timer,
+      'total_time': timer,
       motion_time: motionTimer,
-      'max-speed': 1,
+      'max_speed': 1,
       distance: motionTimer
     });
 

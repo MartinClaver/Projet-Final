@@ -12,6 +12,10 @@ const HomePage = () => {
   const navigation = useNavigation();
   const [isManual, setIsManual] = useState(true)
 
+  const displayScoreboard = () => {
+    navigation.navigate('ScoreBoard');
+  }
+
   return (
     
     <SafeAreaView style={styles.container}>
@@ -19,9 +23,11 @@ const HomePage = () => {
         	<View style={styles.svgLogo}>
         		<LogoApp/>
         	</View>
-			<View style={styles.svgScores}>
-				<Scores/>
-			</View>
+          <View style={styles.svgScores}>
+            <TouchableOpacity onPress={displayScoreboard}>
+              <Scores />
+            </TouchableOpacity>
+			    </View>
       	</View>
 		<Image
 			source={require('../assets/Car.png')}
