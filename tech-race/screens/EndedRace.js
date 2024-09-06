@@ -57,7 +57,7 @@ const EndedRace = ({ route, navigation }) => {
       created_at: date_in_db,
       'total_time': timer,
       motion_time: motionTimer,
-      'max-speed': 1,
+      'max_speed': 1,
       distance: motionTimer
     });
 
@@ -105,8 +105,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   homeLogo: {
-    width: "80",
-    height: "80",
     position: 'absolute',
     top: 0,
     left: 40,

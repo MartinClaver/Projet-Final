@@ -5,7 +5,7 @@ import { formatTime } from '../components/Timer';
 import HomeLogo from "../assets/HomeLogo.svg";
 
 const ScoreBoard = ({ navigation }) => {
-  const title = 'Classement des scores';
+  const title = 'Leaderboard';
   const [stats, setStats] = useState([]);
   const [sortOrder, setSortOrder] = useState('desc');
   const colors = ['deeppink', 'skyblue', 'yellow', 'greenyellow', 'darkorange'];
@@ -78,13 +78,13 @@ const ScoreBoard = ({ navigation }) => {
             <Text style={styles.headerText}>Date</Text>
           </View>
           <View style={styles.columnHeader}>
-            <Text style={styles.headerText}>Temps</Text>
+            <Text style={styles.headerText}>Time</Text>
           </View>
         </View>
         <View style={styles.sortButtonContainer}>
           <TouchableOpacity onPress={toggleSortOrder} style={styles.sortButton}>
             <Text style={styles.sortButtonText}>
-              Temps : {sortOrder === 'asc' ? '↑ Croissant' : '↓ Décroissant'}
+              Time : {sortOrder === 'asc' ? '↑ Asc' : '↓ Desc'}
             </Text>
           </TouchableOpacity>
         </View>
