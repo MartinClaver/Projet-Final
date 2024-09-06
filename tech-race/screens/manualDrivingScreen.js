@@ -47,34 +47,6 @@ const ManualDrivingScreen = ({ navigation }) => {
     };
   }, []);
 
-  const goBackForWard = (direction) => {
-    const message = {
-      cmd: 1,
-      data: direction === "back" ? [-1, -1, -1, -1] : [1, 1, 1, 1],
-    };
-    ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);
-  }
-
-  const goLeftOrRigth = (direction) => {
-    const message = {
-      cmd: 1,
-      data: direction === "left" ? [-1, -1, 1, 1] : [1, 1, -1, -1],
-    };
-    ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);
-  }
-
-  const stopEverything = () => {
-    const message = {
-      cmd: 1,
-      data: [0, 0, 0, 0],
-    };
-    ws.send(JSON.stringify(message));
-    console.log('Message sent:', message);
-    setIsMoving(false);
-  }
-
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
@@ -90,7 +62,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const handleStopPress = () => {
     setIsRunning(false);
     setResetTimer(true);
-    navigation.navigate('EndedRace', {timer: timer, motionTimer: motionTimer});
+    navigation.navigate('EndedRace', { timer: timer, motionTimer: motionTimer });
   };
 
   const klaxon = () => {
@@ -192,7 +164,7 @@ const ManualDrivingScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
       </TouchableOpacity>
-      <Timer isRunning={isRunning} resetTimer={resetTimer} timer={timer} setTimer={setTimer} isMoving={isMoving} motionTimer={motionTimer} setMotionTimer={setMotionTimer}/>
+      <Timer isRunning={isRunning} resetTimer={resetTimer} timer={timer} setTimer={setTimer} isMoving={isMoving} motionTimer={motionTimer} setMotionTimer={setMotionTimer} />
       <View style={styles.controls}>
         <View style={styles.arrows}>
           <CustomPressable

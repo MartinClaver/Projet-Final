@@ -1,8 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ManualDrivingScreen from './screens/manualDrivingScreen.js';
-import HomePage from './screens/HomePage.js';
-import BotDrivingView from './screens/BotDrivingView.js';
+import HomePage from './screens/homePage.js';
+import BotDrivingView from './screens/botDrivingView.js';
 import EndedRace from './screens/EndedRace';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -16,8 +16,8 @@ export default function App() {
           initialRouteName="HomePage"
           screenOptions={{
             headerShown: false,
-            }}
-            >
+          }}
+        >
           <Stack.Screen name="HomePage" component={HomePage} />
           <Stack.Screen name="Manual" component={ManualDrivingScreen} />
           <Stack.Screen name="BotView" component={BotDrivingView} />

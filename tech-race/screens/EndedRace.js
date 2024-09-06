@@ -5,27 +5,58 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '../supabaseClient';
 import { formatTime } from '../components/Timer';
+
 const EndedRace = ({ route, navigation }) => {
+  const { timer, motionTimer } = route.params;
+  const date = new Date();
+  const today = `${date.getDay() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
     };
-  
+
     lockOrientation();
-  
+
     return () => {
       ScreenOrientation.unlockAsync();
     };
   }, []);
 
-  const { timer, motionTimer } = route.params;
-  const date = new Date();
-  const today = `${date.getDay()+1}/${date.getMonth()+1}/${date.getFullYear()}`
+
+  const insertRaceStats = async (data) => {
+    try {
+      const response = await fetch('http://localhost:4000/api/insertStats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Race stats inserted:', result);
+    } catch (error) {
+      console.error('Error inserting race stats:', error);
+    }
+  };
+
   const date_in_db = date.toISOString();
-  const insertInSupabase = async (table, data) => { const { error } = await supabase.from(table).insert(data)}
-  insertInSupabase('stats', {created_at: date_in_db, 'total-time': timer, motion_time: motionTimer, 'max-speed': 1, distance: motionTimer});
   const formattedTimer = formatTime(timer);
   const formattedMotionTimer = formatTime(motionTimer);
+
+  insertRaceStats({
+    created_at: date_in_db,
+    total_time: timer,
+    motion_time: motionTimer,
+    max_speed: 1,
+    distance: motionTimer
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -33,11 +64,11 @@ const EndedRace = ({ route, navigation }) => {
           <HomeLogo onPress={() => navigation.navigate('HomePage')} />
         </View>
         <View style={styles.titleView}>
-          <Text style={styles.title}>RACE SUMMARY</Text> 
+          <Text style={styles.title}>RACE SUMMARY</Text>
         </View>
       </View>
       <View style={styles.body}>
-        <Image source={require('../assets/carImage.png')} style={styles.carImage}/>
+        <Image source={require('../assets/carImage.png')} style={styles.carImage} />
         <View>
           <View style={StyleSheet.flatten([styles.stats, styles.timer])}>
             <Text style={styles.statTitle}>Timer</Text>
@@ -102,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
   },
-  timer:{
+  timer: {
     width: 225,
     height: 100,
   },
