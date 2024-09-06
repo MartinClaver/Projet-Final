@@ -50,33 +50,23 @@ export default function ScoreBoard() {
   }, []);
 
   // Fonction pour rendre une colonne de scores
-  const scoreColumn = (dataScore, key) => {
-    let data;
-    switch (key) {
-      case ('created_at'):
-        const formatedDate = date.toISOString();
-        data = formatedDate
-        break;
-      case ('total-time'):
-        const formattedTimer = formatTime(timer);
-        data = formattedTimer
-        break;
-    }
-    return (
-      <FlatList
-        data={dataScore}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Text style={[styles.itemText, { color: item.color }]}>
-              {data}
-            </Text>
-          </View>
-        )}
-        scrollEnabled={false}
-      />
-    )
-  };
+  // const scoreColumn = (dataScore, key) => {
+
+  //   return (
+  //     <FlatList
+  //       data={dataScore}
+  //       keyExtractor={(item) => item.id.toString()}
+  //       renderItem={({ item }) => (
+  //         <View style={styles.itemContainer}>
+  //           <Text style={[styles.itemText, { color: item.color }]}>
+  //             {data}
+  //           </Text>
+  //         </View>
+  //       )}
+  //       scrollEnabled={false}
+  //     />
+  //   )
+  // };
 
   return (
     <View style={styles.container}>
@@ -92,14 +82,21 @@ export default function ScoreBoard() {
             <Text style={styles.headerText}>Temps</Text>
           </View>
         </View>
-        <View style={styles.row}>
-          <View style={styles.column}>
-            {scoreColumn(stats, 'created_at')}
-          </View>
-          <View style={styles.column}>
-            {scoreColumn(stats, 'total-time')}
-          </View>
-        </View>
+        <FlatList
+          data={stats}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.itemContainer}>
+              <Text style={[styles.itemText, { color: item.color }]}>
+                {item.created_at.toISOString()}
+              </Text>
+              <Text style={[styles.itemText, { color: item.color }]}>
+                {formatTime(item.total_time)}
+              </Text>
+            </View>
+          )}
+          scrollEnabled={false}
+        />
       </View>
     </View>
   );
