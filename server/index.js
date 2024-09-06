@@ -1,8 +1,10 @@
 const { createClient } = require('@supabase/supabase-js');
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const WebSocket = require('ws');
-const mqtt = require('mqtt');
+// const mqtt = require('mqtt');
 
 dotenv.config();
 
@@ -11,6 +13,10 @@ const supabaseKey = process.env.SUPABASE_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
+const port = 4000;
+
+app.use(cors());
+app.use(bodyParser.json());
 
 // Basic root route for checking server status
 app.get('/', (req, res) => {
@@ -31,8 +37,26 @@ app.get('/test', async (req, res) => {
     }
 });
 
-const server = app.listen(4000, () => {
-    console.log('HTTP server running on port 4000');
+// Expo GO et localhost pas compatible
+// app.post('/insertStats', async (req, res) => {
+//     const { date_in_db, total_time, motionTimer, max_speed } = req.body;
+
+//     const { data, error } = await supabase
+//         .from('stats')
+//         .insert([
+//             { created_at, 'total-time': total_time, motion_time, 'max-speed': max_speed, distance }
+//         ]);
+
+//     if (error) {
+//         console.error('Error inserting stats:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     } else {
+//         res.status(201).json(data);
+//     }
+// });
+
+const server = app.listen(port, () => {
+    console.log(`HTTP server running on http://localhost:${port}`);
 });
 
 // WebSocket server setup
@@ -55,33 +79,32 @@ wss.on('connection', ws => {
     });
 });
 
-console.log('WebSocket server is running on ws://localhost:4000/ws');
 
-// MQTT setup
-const mqttClient = mqtt.connect('mqtt://192.168.43.134:1883');
+// // MQTT setup
+// const mqttClient = mqtt.connect('mqtt://192.168.43.134:1883');
 
-mqttClient.on('connect', () => {
-    console.log('Connected to MQTT broker');
-    // Subscribe to multiple topics
-    mqttClient.subscribe(['esp32/track', 'esp32/sonar', 'esp32/light'], (err, granted) => {
-        if (err) {
-            console.error('Subscription error:', err);
-        } else {
-            console.log('Subscription successful:', granted);
-        }
-    });
-});
+// mqttClient.on('connect', () => {
+//     console.log('Connected to MQTT broker');
+//     // Subscribe to multiple topics
+//     mqttClient.subscribe(['esp32/track', 'esp32/sonar', 'esp32/light'], (err, granted) => {
+//         if (err) {
+//             console.error('Subscription error:', err);
+//         } else {
+//             console.log('Subscription successful:', granted);
+//         }
+//     });
+// });
 
-mqttClient.on('error', (err) => {
-    console.error('MQTT Client Error:', err);
-});
+// mqttClient.on('error', (err) => {
+//     console.error('MQTT Client Error:', err);
+// });
 
-mqttClient.on('message', (topic, message) => {
-    console.log(`MQTT message received on topic ${topic}: ${message.toString()}`);
-    // Broadcast the message to all connected WebSocket clients
-    wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ topic, message: message.toString() }));
-        }
-    });
-});
+// mqttClient.on('message', (topic, message) => {
+//     console.log(`MQTT message received on topic ${topic}: ${message.toString()}`);
+//     // Broadcast the message to all connected WebSocket clients
+//     wss.clients.forEach(client => {
+//         if (client.readyState === WebSocket.OPEN) {
+//             client.send(JSON.stringify({ topic, message: message.toString() }));
+//         }
+//     });
+// });

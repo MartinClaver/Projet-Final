@@ -3,19 +3,64 @@ import { useEffect } from 'react';
 import HomeLogo from "../assets/HomeLogo.svg";
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { formatTime } from '../components/Timer';
+import { supabase } from '../supabaseClient';
 
-const EndedRace = ({ navigation }) => {
+const EndedRace = ({ route, navigation }) => {
+  const { timer, motionTimer } = route.params;
+  const date = new Date();
+  const today = `${date.getDay() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
     };
-  
+
     lockOrientation();
-  
+
     return () => {
       ScreenOrientation.unlockAsync();
     };
   }, []);
+
+
+  // Expo GO et localhost pas compatible
+  // const insertRaceStats = async (data) => {
+  //   try {
+  //     const response = await fetch('http://localhost:4000/insertStats', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(data),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+
+  //     const result = await response.json();
+  //     console.log('Race stats inserted:', result);
+  //   } catch (error) {
+  //     console.error('Error inserting race stats:', error);
+  //   }
+  // };
+
+  const insertInSupabase = async (table, data) => { const { error } = await supabase.from(table).insert(data) }
+
+  const date_in_db = date.toISOString();
+  const formattedTimer = formatTime(timer);
+  const formattedMotionTimer = formatTime(motionTimer);
+
+  insertInSupabase('stats',
+    {
+      created_at: date_in_db,
+      'total-time': timer,
+      motion_time: motionTimer,
+      'max-speed': 1,
+      distance: motionTimer
+    });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -23,30 +68,29 @@ const EndedRace = ({ navigation }) => {
           <HomeLogo onPress={() => navigation.navigate('HomePage')} />
         </View>
         <View style={styles.titleView}>
-          <Text style={styles.title}>RACE SUMMARY</Text> 
+          <Text style={styles.title}>RACE SUMMARY</Text>
         </View>
       </View>
       <View style={styles.body}>
-        <Image source={require('../assets/carImage.png')} style={styles.carImage}/>
+        <Image source={require('../assets/carImage.png')} style={styles.carImage} />
         <View>
           <View style={StyleSheet.flatten([styles.stats, styles.timer])}>
             <Text style={styles.statTitle}>Timer</Text>
-            <Text style={styles.data}>Data</Text>
+            <Text style={styles.data}>{formattedTimer}</Text>
           </View>
           <View style={styles.speed}>
             <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
-              <Text style={styles.statTitle}>Average Speed</Text>
-              <Text style={styles.data}>Data</Text>
+              <Text style={styles.statTitle}>Motion Time</Text>
+              <Text style={styles.data}>{formattedMotionTimer}</Text>
             </View>
             <View style={StyleSheet.flatten([styles.stats, styles.statsContainer])}>
-              <Text style={styles.statTitle}>Max Speed</Text>
-              <Text style={styles.data}>Data</Text>
+              <Text style={styles.statTitle}>Date</Text>
+              <Text style={styles.data}>{today}</Text>
             </View>
           </View>
         </View>
       </View>
     </SafeAreaView>
-
   );
 }
 
@@ -57,14 +101,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    paddingTop: 60,
+    paddingTop: 10,
     flexDirection: 'row',
   },
   homeLogo: {
     position: 'absolute',
-    top: 20,
-    left: 0,
-    padding: 10,
+    top: 0,
+    left: 40,
+    padding: 0,
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
@@ -84,6 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
+    padding: 20
   },
   stats: {
     backgroundColor: '#24E8A0',
@@ -91,7 +136,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
   },
-  timer:{
+  timer: {
     width: 225,
     height: 100,
   },
@@ -108,7 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   data: {
-    fontSize: 32,
+    fontSize: 21,
     fontWeight: 'bold',
   },
   carImage: {

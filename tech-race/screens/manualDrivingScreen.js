@@ -13,7 +13,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ManualDrivingScreen = ({ navigation }) => {
   const [isRunning, setIsRunning] = useState(false);
+  const [isMoving, setIsMoving] = useState(0);
   const [resetTimer, setResetTimer] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [motionTimer, setMotionTimer] = useState(0);
   const [arrowDirection, setArrowDirection] = useState(null);
   const [pedalDirection, setPedalDirection] = useState(null);
 
@@ -59,7 +62,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const handleStopPress = () => {
     setIsRunning(false);
     setResetTimer(true);
-    navigation.navigate('EndedRace');
+    navigation.navigate('EndedRace', { timer: timer, motionTimer: motionTimer });
   };
 
   const klaxon = () => {
@@ -102,6 +105,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const onPressPedalIn = (direction) => {
     setPedalDirection(direction);
     setIsRunning(true);
+    setIsMoving(true);
     setResetTimer(false);
     if (arrowDirection) {
       handleCombinedPress(arrowDirection, direction);
@@ -160,7 +164,7 @@ const ManualDrivingScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
         <StopSVG />
       </TouchableOpacity>
-      <Timer isRunning={isRunning} resetTimer={resetTimer} />
+      <Timer isRunning={isRunning} resetTimer={resetTimer} timer={timer} setTimer={setTimer} isMoving={isMoving} motionTimer={motionTimer} setMotionTimer={setMotionTimer} />
       <View style={styles.controls}>
         <View style={styles.arrows}>
           <CustomPressable
