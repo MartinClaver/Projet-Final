@@ -108,3 +108,27 @@ wss.on('connection', ws => {
 //         }
 //     });
 // });
+
+// À la fin de votre fichier index.js
+module.exports = {
+    app,
+    connectMQTT: () => {
+        // Votre code de connexion MQTT ici
+        const mqttClient = mqtt.connect('mqtt://192.168.43.134:1883');
+
+        mqttClient.on('connect', () => {
+            console.log('Connected to MQTT broker');
+            mqttClient.subscribe(['esp32/track', 'esp32/sonar', 'esp32/light'], (err, granted) => {
+                if (err) {
+                    console.error('Subscription error:', err);
+                } else {
+                    console.log('Subscription successful:', granted);
+                }
+            });
+        });
+
+        // ... le reste de votre code MQTT ...
+
+        return mqttClient;
+    }
+};
