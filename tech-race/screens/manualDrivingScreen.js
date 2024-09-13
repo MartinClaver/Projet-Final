@@ -62,7 +62,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const handleStopPress = () => {
     setIsRunning(false);
     setResetTimer(true);
-    navigation.navigate('EndedRace', { timer: timer, motionTimer: motionTimer });
+    navigation.navigate('EndedRace', { params: {timer: timer, motionTimer: motionTimer }});
   };
 
   const klaxon = () => {
