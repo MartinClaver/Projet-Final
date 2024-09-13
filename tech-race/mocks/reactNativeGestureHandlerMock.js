@@ -3,7 +3,7 @@ const Gesture = {
       maxDuration: jest.fn().mockReturnThis(),
       onBegin: jest.fn().mockReturnThis(),
       onEnd: jest.fn().mockReturnThis(),
-      onFinalize: jest.fn().mockReturnThis(), // Add mock for onFinalize
+      onFinalize: jest.fn().mockReturnThis(),
     })),
   };
   
