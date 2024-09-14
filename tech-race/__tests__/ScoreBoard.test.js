@@ -1,8 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react-native';
-import { formatTime } from '../components/Timer';
+import { render, fireEvent } from '@testing-library/react-native';
 import ScoreBoard from '../screens/ScoreBoard';
-import getRandomColor from '../screens/ScoreBoard';
 
 const mockNavigation = { navigate: jest.fn() };
 jest.mock('../components/CustomPressable', () => {
@@ -24,10 +22,10 @@ jest.mock('../supabaseClient', () => ({
     }
   }));
 
-test('Le bouton de tri change correctement l\'ordre', async () => {
+test('The sort button correctly changes order', async () => {
     const { getByTestId, findByTestId } = render(<ScoreBoard navigation={mockNavigation} />);
     const sortButton = getByTestId('sort-button');
-    
+
     expect((await findByTestId('sort-button-text')).props.children.join('')).toBe('Time : ↓ Desc');
     fireEvent.press(sortButton);
     expect((await findByTestId('sort-button-text')).props.children.join('')).toBe('Time : ↑ Asc');
