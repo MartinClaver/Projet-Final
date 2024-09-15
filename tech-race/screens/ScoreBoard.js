@@ -82,8 +82,8 @@ const ScoreBoard = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.sortButtonContainer}>
-          <TouchableOpacity onPress={toggleSortOrder} style={styles.sortButton}>
-            <Text style={styles.sortButtonText}>
+          <TouchableOpacity onPress={toggleSortOrder} style={styles.sortButton} testID="sort-button">
+            <Text style={styles.sortButtonText} testID="sort-button-text">
               Time : {sortOrder === 'asc' ? '↑ Asc' : '↓ Desc'}
             </Text>
           </TouchableOpacity>
