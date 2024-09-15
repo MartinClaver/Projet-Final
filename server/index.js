@@ -82,30 +82,39 @@ wss.on('connection', ws => {
     });
 });
 
+const connectMQTT = () => {
+    const mqttClient = mqtt.connect('mqtt://192.168.43.134:1883');
 
-// MQTT setup
-mqttClient.on('connect', () => {
-    console.log('Connected to MQTT broker');
-    // Inscription vers différent topic de mosquitto
-    mqttClient.subscribe(['esp32/track', 'esp32/sonar', 'esp32/light'], (err, granted) => {
-        if (err) {
-            console.error('Subscription error:', err);
-        } else {
-            console.log('Subscription successful:', granted);
-        }
+    mqttClient.on('connect', () => {
+        console.log('Connected to MQTT broker');
+        mqttClient.subscribe(['esp32/track', 'esp32/sonar', 'esp32/light'], (err, granted) => {
+            if (err) {
+                console.error('Subscription error:', err);
+            } else {
+                console.log('Subscription successful:', granted);
+            }
+        });
     });
-});
 
-mqttClient.on('error', (err) => {
-    console.error('MQTT Client Error:', err);
-});
-
-mqttClient.on('message', (topic, message) => {
-    console.log(`MQTT message received on topic ${topic}: ${message.toString()}`);
-    // Connecte les topics mqtt au webhook
-    wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify({ topic, message: message.toString() }));
-        }
+    mqttClient.on('error', (err) => {
+        console.error('MQTT Client Error:', err);
     });
-});
+
+    mqttClient.on('message', (topic, message) => {
+        console.log(`MQTT message received on topic ${topic}: ${message.toString()}`);
+        // Broadcast the message to all connected WebSocket clients
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ topic, message: message.toString() }));
+            }
+        });
+    });
+
+    return mqttClient;
+};
+
+
+module.exports = {
+    app,
+    connectMQTT
+};
