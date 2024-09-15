@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, Text, Dimensions, StyleSheet, Pressable } from 'react-native';
+import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import LogoApp from '../assets/LogoApp.svg';
 import Scores from '../assets/Scores.svg';
 import Automatic from '../assets/Automatic.svg';
@@ -17,30 +17,29 @@ const HomePage = () => {
   }
 
   return (
-    
     <SafeAreaView style={styles.container}>
-    	<View style={styles.header}>
-        	<View style={styles.svgLogo}>
-        		<LogoApp/>
-        	</View>
-          <View style={styles.svgScores}>
-            <TouchableOpacity onPress={displayScoreboard}>
-              <Scores />
-            </TouchableOpacity>
-			    </View>
-      	</View>
-		<Image
-			source={require('../assets/Car.png')}
-			style={styles.image}
-			resizeMode="contain"
-		/>
-		<View style={styles.buttonRow}>
-			<ButtonDefault title="Automatic" onPress={() => setIsManual(false)} inverted={isManual} svg={Automatic} />
-			<ButtonDefault title="Manual" onPress={() => setIsManual(true)} inverted={!isManual} svg={Manual} />
-      	</View>
-      	<TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate(isManual ? 'Manual' : 'BotView')}>
-        	<Text style={styles.buttonText}>Start Engine</Text>
-      	</TouchableOpacity>
+      <View style={styles.header}>
+        <View style={styles.svgLogo}>
+          <LogoApp />
+        </View>
+        <View style={styles.svgScores}>
+          <TouchableOpacity onPress={displayScoreboard}>
+            <Scores />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <Image
+        source={require('../assets/Car.png')}
+        style={styles.image}
+        resizeMode="contain"
+      />
+      <View style={styles.buttonRow}>
+        <ButtonDefault title="Automatic" onPress={() => setIsManual(false)} inverted={isManual} svg={Automatic} />
+        <ButtonDefault title="Manual" onPress={() => setIsManual(true)} inverted={!isManual} svg={Manual} />
+      </View>
+      <TouchableOpacity style={styles.circleButton} onPress={() => navigation.navigate(isManual ? 'Manual' : 'BotView')}>
+        <Text style={styles.buttonText}>Start Engine</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -59,20 +58,20 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   svgLogo: {
-	flex: 1,
-	justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-	marginTop: '3em'
+    marginTop: '3em'
   },
   svgScores: {
-	flexDirection: 'row',
-	justifyContent: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-	marginHorizontal: '1em'
+    marginHorizontal: '1em'
   },
   image: {
-	marginVertical: '2em',
-	marginLeft: '10%',
+    marginVertical: '2em',
+    marginLeft: '10%',
   },
   buttonRow: {
     flexDirection: 'row',
