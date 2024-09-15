@@ -46,7 +46,13 @@ const EndedRace = ({ route, navigation }) => {
   //   }
   // };
 
-  const insertInSupabase = async (table, data) => { const { error } = await supabase.from(table).insert(data) }
+  const insertInSupabase = async (table, data) => {
+    try {
+      await supabase.from(table).insert(data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const date_in_db = date.toISOString();
   const formattedTimer = formatTime(timer);

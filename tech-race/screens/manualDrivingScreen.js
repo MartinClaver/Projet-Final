@@ -62,7 +62,7 @@ const ManualDrivingScreen = ({ navigation }) => {
   const handleStopPress = () => {
     setIsRunning(false);
     setResetTimer(true);
-    navigation.navigate('EndedRace', { timer: timer, motionTimer: motionTimer });
+    navigation.navigate('EndedRace', { params: {timer: timer, motionTimer: motionTimer }});
   };
 
   const klaxon = () => {
@@ -83,6 +83,7 @@ const ManualDrivingScreen = ({ navigation }) => {
     console.log('KLAXON STOP');
   };
 
+  // Gauche droite ou gauche droite + pédale frein ou accélération
   const onPressArrowIn = (direction) => {
     setArrowDirection(direction);
     if (pedalDirection) {
@@ -102,6 +103,7 @@ const ManualDrivingScreen = ({ navigation }) => {
     stopEverything();
   };
 
+  // recule avance ou recule avance et tourne
   const onPressPedalIn = (direction) => {
     setPedalDirection(direction);
     setIsRunning(true);
@@ -161,7 +163,7 @@ const ManualDrivingScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress}>
+      <TouchableOpacity style={styles.stopButton} onPressIn={handleStopPress} testID="stop-button">
         <StopSVG />
       </TouchableOpacity>
       <Timer isRunning={isRunning} resetTimer={resetTimer} timer={timer} setTimer={setTimer} isMoving={isMoving} motionTimer={motionTimer} setMotionTimer={setMotionTimer} />

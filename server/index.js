@@ -4,13 +4,16 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const WebSocket = require('ws');
-// const mqtt = require('mqtt');
+const mqtt = require('mqtt');
 
 dotenv.config();
 
+// Supabase setup
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+const mqttClient = mqtt.connect('mqtt://192.168.43.134:1883');
 
 const app = express();
 const port = 4000;
@@ -18,11 +21,12 @@ const port = 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Basic root route for checking server status
+// Route pour check si le server run correctement sur localhost:4000
 app.get('/', (req, res) => {
     res.send('WebSocket server is running.');
 });
 
+// Route pour check si le server et superbase se connecte bien
 app.get('/test', async (req, res) => {
     const { data: stats, error } = await supabase
         .from('stats')
@@ -37,7 +41,7 @@ app.get('/test', async (req, res) => {
     }
 });
 
-// Expo GO et localhost pas compatible
+// Expo GO et localhost pas compatible - test front + back insert
 // app.post('/insertStats', async (req, res) => {
 //     const { date_in_db, total_time, motionTimer, max_speed } = req.body;
 
@@ -59,7 +63,7 @@ const server = app.listen(port, () => {
     console.log(`HTTP server running on http://localhost:${port}`);
 });
 
-// WebSocket server setup
+// WebSocket setup
 const wss = new WebSocket.Server({ server, path: '/ws' });
 
 wss.on('connection', ws => {
@@ -67,7 +71,6 @@ wss.on('connection', ws => {
 
     ws.on('message', message => {
         console.log(`Received: ${message}`);
-        // Handle the received message here
     });
 
     ws.on('close', () => {
